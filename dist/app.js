@@ -6,13 +6,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const index_1 = require("./routes/index");
+const prisma_session_store_1 = require("@quixo3/prisma-session-store");
+const client_1 = require("@prisma/client");
+const express_session_1 = __importDefault(require("express-session"));
+const passport_1 = __importDefault(require("passport"));
+require("./config/passport");
 exports.app = (0, express_1.default)();
-const port = process.env.PORT || 3000;
+exports.app.use(express_1.default.json());
+exports.app.use(express_1.default.urlencoded({ extended: true }));
+exports.app.use((0, express_session_1.default)({
+    cookie: {
+        maxAge: 7 * 24 * 60 * 60 * 1000, // ms
+    },
+    secret: process.env.secret,
+    resave: true,
+    saveUninitialized: true,
+    store: new prisma_session_store_1.PrismaSessionStore(new client_1.PrismaClient(), {
+        checkPeriod: 2 * 60 * 1000, //ms
+        dbRecordIdIsSessionId: true,
+        dbRecordIdFunction: undefined,
+    }),
+}));
+exports.app.use(passport_1.default.session());
 exports.app.use("/", index_1.router);
-exports.app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
-});
 exports.app.use((err, req, res, next) => {
     res.status(err.status | 500);
     res.send({ error: err });
+});
+const port = process.env.PORT || 3000;
+exports.app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
 });

@@ -13,12 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
-const express_session_1 = __importDefault(require("express-session"));
 const passport_local_1 = require("passport-local");
-const prisma_session_store_1 = require("@quixo3/prisma-session-store");
 const client_1 = require("@prisma/client");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const app_1 = require("../app");
 require("dotenv/config");
 const LocalStrategy = passport_local_1.Strategy;
 const prisma = new client_1.PrismaClient();
@@ -56,17 +53,4 @@ passport_1.default.deserializeUser((id, done) => __awaiter(void 0, void 0, void 
     catch (err) {
         done(err);
     }
-}));
-app_1.app.use((0, express_session_1.default)({
-    cookie: {
-        maxAge: 7 * 24 * 60 * 60 * 1000, // ms
-    },
-    secret: process.env.secret,
-    resave: true,
-    saveUninitialized: true,
-    store: new prisma_session_store_1.PrismaSessionStore(new client_1.PrismaClient(), {
-        checkPeriod: 2 * 60 * 1000, //ms
-        dbRecordIdIsSessionId: true,
-        dbRecordIdFunction: undefined,
-    }),
 }));
