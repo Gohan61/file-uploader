@@ -8,6 +8,7 @@ import express, {
 import cors from "cors";
 import dotenv from "dotenv";
 import { router } from "./routes/index";
+import { fileRouter } from "./routes/files";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { PrismaClient } from "@prisma/client";
 import session from "express-session";
@@ -16,7 +17,7 @@ import "./config/passport";
 
 export const app: Application = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
@@ -37,6 +38,7 @@ app.use(
 app.use(passport.session());
 
 app.use("/", router);
+app.use("/files", passport.authenticate("session"), fileRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status | 500);
