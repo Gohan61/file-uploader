@@ -25,17 +25,16 @@ const prisma = new PrismaClient({
 });
 
 describe("post requests", () => {
-  // Run once to sign a single user up and save to test database
-  // it("user can sign up", async () => {
-  //   const res = await request(app)
-  //     .post("/signup")
-  //     .type("form")
-  //     .send({ username: "testing", password: "testing" })
-  //     .then((res) => {
-  //       expect(res.status).toBe(200);
-  //       expect(res.body.message).not.toBeFalsy();
-  //     });
-  // });
+  it("user can sign up", async () => {
+    const res = await request(app)
+      .post("/signup")
+      .type("form")
+      .send({ username: "testing", password: "testing" })
+      .then((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body.message).not.toBeFalsy();
+      });
+  });
 
   it("returns validation errors", async () => {
     const res = await request(app)
@@ -57,5 +56,9 @@ describe("post requests", () => {
         expect(res.error).not.toBeFalsy();
         expect(res.status).toBe(404);
       });
+  });
+
+  afterAll(async () => {
+    await prisma.user.deleteMany({});
   });
 });
