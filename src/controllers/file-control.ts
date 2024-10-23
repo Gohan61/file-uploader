@@ -27,3 +27,25 @@ export const newFile = [
     }
   }),
 ];
+
+export const deleteFile = asyncHandler(
+  async (req: Request, res: Response, next): Promise<any> => {
+    const file = await prisma.files.findUnique({
+      where: {
+        id: Number(req.params.file),
+      },
+    });
+
+    if (!file) {
+      return res.status(500).json({ error: "File not found" });
+    }
+
+    await prisma.files.delete({
+      where: {
+        id: file.id,
+      },
+    });
+
+    return res.status(200).json({ message: "File deleted" });
+  }
+);
