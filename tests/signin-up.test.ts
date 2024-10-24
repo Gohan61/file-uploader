@@ -2,12 +2,31 @@ import { router } from "../src/routes/index";
 import request from "supertest";
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import session from "express-session";
+import passport from "passport";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import "../src/config/passport";
-import dotenv from "dotenv";
 
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  session({
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // ms
+    },
+    secret: process.env.secret as string,
+    resave: true,
+    saveUninitialized: true,
+    store: new PrismaSessionStore(new PrismaClient(), {
+      checkPeriod: 2 * 60 * 1000, //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
+  })
+);
+app.use(passport.session());
 
 app.use("/", router);
 
@@ -55,6 +74,16 @@ describe("post requests", () => {
       .then((res) => {
         expect(res.error).not.toBeFalsy();
         expect(res.status).toBe(404);
+      });
+  });
+
+  it("signs user in", async () => {
+    const res = await request(app)
+      .post("/signin")
+      .type("form")
+      .send({ username: "testing", password: "testing" })
+      .then((res) => {
+        expect(res.status).toBe(200);
       });
   });
 
