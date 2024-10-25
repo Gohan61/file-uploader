@@ -14,8 +14,12 @@ export async function seed() {
     where: { username: "testing" },
     update: {},
     create: {
+      id: 1,
       username: "testing",
       password: await bcrypt.hash("testing", 10),
+      files: {
+        create: [{ id: 1, title: "Test file", link: "Link" }],
+      },
     },
   });
 }
