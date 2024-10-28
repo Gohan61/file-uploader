@@ -21,6 +21,10 @@ const prisma = new PrismaClient({
   },
 });
 
+afterAll(async () => {
+  await prisma.user.deleteMany({});
+});
+
 describe("post requests", () => {
   it("user can sign up", async () => {
     const res = await request(app)
@@ -63,9 +67,5 @@ describe("post requests", () => {
       .then((res) => {
         expect(res.status).toBe(200);
       });
-  });
-
-  afterAll(async () => {
-    await prisma.user.deleteMany({});
   });
 });

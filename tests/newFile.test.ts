@@ -27,6 +27,11 @@ beforeAll(async () => {
   await seed();
 });
 
+afterAll(async () => {
+  await prisma.user.deleteMany({});
+  await prisma.files.deleteMany({});
+});
+
 describe("User can upload files", () => {
   it("sign user in", async () => {
     const res = await request(app)
@@ -67,9 +72,5 @@ describe("User can upload files", () => {
         expect(res.status).toBe(200);
         expect(res.body.message).not.toBeFalsy();
       });
-  });
-
-  afterAll(async () => {
-    await prisma.user.deleteMany({});
   });
 });
