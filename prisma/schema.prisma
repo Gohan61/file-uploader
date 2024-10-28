@@ -21,6 +21,12 @@ model User {
   files    Files[]
 }
 
+model Folder {
+  id    Int     @id @default(autoincrement())
+  title String  @unique @db.VarChar(255)
+  files Files[]
+}
+
 model Files {
   id        Int       @id @default(autoincrement())
   title     String    @db.VarChar(255)
@@ -29,6 +35,8 @@ model Files {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   link      String
+  Folder    Folder?   @relation(fields: [folderId], references: [id])
+  folderId  Int?
 }
 
 model Session {
