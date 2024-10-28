@@ -9,6 +9,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { router } from "./routes/index";
 import { fileRouter } from "./routes/files";
+import { folderRouter } from "./routes/folders";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { PrismaClient } from "@prisma/client";
 import session from "express-session";
@@ -39,6 +40,7 @@ app.use(passport.session());
 
 app.use("/", router);
 app.use("/files", passport.authenticate("session"), fileRouter);
+app.use("/folders", passport.authenticate("session"), folderRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status | 500);
