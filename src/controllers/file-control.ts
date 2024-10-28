@@ -7,14 +7,19 @@ import { User } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const newFile = [
+  body("title").trim().isLength({ min: 1 }),
+
   asyncHandler(async (req: Request, res: Response, next): Promise<any> => {
     let file;
+    const body: { folderId: number } = req.body;
+    const user = req.user as User | undefined;
 
-    if (req.file && req.user) {
+    if (req.file && user) {
       file = await prisma.files.create({
         data: {
           title: req.file.filename,
-          ownerId: (req.user as User).id,
+          ownerId: Number(user.id),
+          folderId: body.folderId,
           link: "test",
         },
       });
@@ -30,9 +35,10 @@ export const newFile = [
 
 export const deleteFile = asyncHandler(
   async (req: Request, res: Response, next): Promise<any> => {
+    const fileId: number = Number(req.params.file);
     const file = await prisma.files.findUnique({
       where: {
-        id: Number(req.params.file),
+        id: fileId,
       },
     });
 

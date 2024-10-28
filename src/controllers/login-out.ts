@@ -15,13 +15,18 @@ export const signup = [
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
+    const body: {
+      username: string;
+      name: string | undefined;
+      password: string;
+    } = req.body;
 
     try {
-      bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+      bcrypt.hash(body.password, 10, async (err, hashedPassword) => {
         const user = await prisma.user.create({
           data: {
-            username: req.body.username,
-            name: req.body.name,
+            username: body.username,
+            name: body.name,
             password: hashedPassword,
           },
         });
@@ -61,8 +66,9 @@ export const signin = [
           if (err) {
             return next(err);
           }
+
+          return res.status(200).json({ ok: "ok" });
         });
-        return res.status(200);
       }
     })(req, res, next);
   }),
