@@ -6,6 +6,7 @@ import { router } from "../routes";
 import session from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import passport from "passport";
+import { folderRouter } from "../routes/folders";
 
 export default function middleWare(app: Express) {
   app.use(express.json({ limit: "10mb" }));
@@ -30,4 +31,5 @@ export default function middleWare(app: Express) {
 
   app.use("/", router);
   app.use("/files", passport.authenticate("session"), fileRouter);
+  app.use("/folders", passport.authenticate("session"), folderRouter);
 }

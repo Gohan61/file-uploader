@@ -10,6 +10,24 @@ const prisma = new PrismaClient({
 });
 
 export async function seed() {
+  const testFolder = await prisma.folder.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      title: "Test folder",
+    },
+  });
+
+  const secondFolder = await prisma.folder.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      id: 2,
+      title: "Second folder",
+    },
+  });
+
   const testUser = await prisma.user.upsert({
     where: { username: "testing" },
     update: {},
@@ -18,7 +36,7 @@ export async function seed() {
       username: "testing",
       password: await bcrypt.hash("testing", 10),
       files: {
-        create: [{ id: 1, title: "Test file", link: "Link" }],
+        create: [{ id: 1, title: "Test file", link: "Link", folderId: 1 }],
       },
     },
   });
