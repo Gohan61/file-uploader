@@ -71,3 +71,42 @@ export const getFile = asyncHandler(async (req, res, next): Promise<any> => {
     },
   });
 });
+
+export const updateFile = [
+  body("newTitle", "Title cannot be empty").trim().isLength({ min: 1 }),
+  body("newFolder", "Folder name cannot be empty").trim().isLength({ min: 1 }),
+
+  asyncHandler(async (req, res, next): Promise<any> => {
+    const errors = validationResult(req);
+    const fileId = Number(req.params.fileId);
+    const file = await prisma.files.findUnique({
+      where: {
+        id: fileId,
+      },
+    });
+
+    const newFolder = await prisma.folder.findUnique({
+      where: {
+        title: req.body.newFolder,
+      },
+    });
+
+    if (!errors.isEmpty()) {
+      return res.status(500).json({ errors: errors.array() });
+    } else if (!file || !newFolder) {
+      return res.status(500).json({ error: "Folder or file does not exist" });
+    } else {
+      const updateFile = await prisma.files.update({
+        where: {
+          id: fileId,
+        },
+        data: {
+          title: req.body.newTitle,
+          folderId: newFolder.id,
+        },
+      });
+
+      return res.status(200).json({ message: "File updated" });
+    }
+  }),
+];
