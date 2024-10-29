@@ -11,8 +11,13 @@ export const newFile = [
 
   asyncHandler(async (req: Request, res: Response, next): Promise<any> => {
     let file;
-    const body: { folderId: number } = req.body;
+    const body: { folderId: number; sendTime: number } = req.body;
     const user = req.user as User | undefined;
+    const uploadTimeSeconds = Math.round(
+      Number(Date.now() - body.sendTime) / 1000
+    );
+    const sizeInMB =
+      (Number(req.file?.size) / (1024 * 1024)).toFixed(2) + " MB";
 
     if (req.file && user) {
       file = await prisma.files.create({
@@ -20,6 +25,8 @@ export const newFile = [
           title: req.file.filename,
           ownerId: Number(user.id),
           folderId: body.folderId,
+          size: sizeInMB,
+          uploadTime: uploadTimeSeconds,
           link: "test",
         },
       });
@@ -55,3 +62,12 @@ export const deleteFile = asyncHandler(
     return res.status(200).json({ message: "File deleted" });
   }
 );
+
+export const getFile = asyncHandler(async (req, res, next): Promise<any> => {
+  const fileId = Number(req.params.fileId);
+  const file = await prisma.files.findUnique({
+    where: {
+      id: fileId,
+    },
+  });
+});
