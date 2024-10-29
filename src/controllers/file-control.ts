@@ -11,10 +11,10 @@ export const newFile = [
 
   asyncHandler(async (req: Request, res: Response, next): Promise<any> => {
     let file;
-    const body: { folderId: number; sendTime: number } = req.body;
+    const body: { folderId: string; sendTime: string } = req.body;
     const user = req.user as User | undefined;
     const uploadTimeSeconds = Math.round(
-      Number(Date.now() - body.sendTime) / 1000
+      Date.now() - Number(body.sendTime) / 1000
     );
     const sizeInMB =
       (Number(req.file?.size) / (1024 * 1024)).toFixed(2) + " MB";
@@ -24,7 +24,7 @@ export const newFile = [
         data: {
           title: req.file.filename,
           ownerId: Number(user.id),
-          folderId: body.folderId,
+          folderId: Number(body.folderId),
           size: sizeInMB,
           uploadTime: uploadTimeSeconds,
           link: "test",
