@@ -70,6 +70,12 @@ export const getFile = asyncHandler(async (req, res, next): Promise<any> => {
       id: fileId,
     },
   });
+
+  if (!file) {
+    return res.status(404).json({ error: "File not found" });
+  } else {
+    return res.status(200).json({ file: file });
+  }
 });
 
 export const updateFile = [
