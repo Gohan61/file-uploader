@@ -64,6 +64,48 @@ describe("User can upload files", () => {
       });
   });
 
+  it("Returns details of file", async () => {
+    const res = await request(app)
+      .get("/files/1")
+      .type("form")
+      .then((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body.file).not.toBeFalsy();
+      });
+  });
+
+  it("Returns error on non-existing file", async () => {
+    const res = await request(app)
+      .get("/files/13")
+      .type("form")
+      .then((res) => {
+        expect(res.status).toBe(404);
+        expect(res.error).not.toBeFalsy();
+      });
+  });
+
+  it("Updates file name + folder", async () => {
+    const res = await request(app)
+      .put("/files/1")
+      .type("form")
+      .send({ newFolder: "Second folder", newTitle: "New Title" })
+      .then((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body.message).not.toBeFalsy();
+      });
+  });
+
+  it("Returns error on non-existing folder", async () => {
+    const res = await request(app)
+      .put("/files/1")
+      .type("form")
+      .send({ newFolder: "Third folder" })
+      .then((res) => {
+        expect(res.status).toBe(500);
+        expect(res.error).not.toBeFalsy();
+      });
+  });
+
   it("Succesfully returns on delete file", async () => {
     const res = await request(app)
       .delete("/files/1")
