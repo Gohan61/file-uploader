@@ -25,12 +25,13 @@ exports.signup = [
     (0, express_validator_1.body)("password", "Password cannot be empty").trim().isLength({ min: 1 }),
     (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const errors = (0, express_validator_1.validationResult)(req);
+        const body = req.body;
         try {
-            bcryptjs_1.default.hash(req.body.password, 10, (err, hashedPassword) => __awaiter(void 0, void 0, void 0, function* () {
+            bcryptjs_1.default.hash(body.password, 10, (err, hashedPassword) => __awaiter(void 0, void 0, void 0, function* () {
                 const user = yield prisma.user.create({
                     data: {
-                        username: req.body.username,
-                        name: req.body.name,
+                        username: body.username,
+                        name: body.name,
                         password: hashedPassword,
                     },
                 });
@@ -69,8 +70,8 @@ exports.signin = [
                     if (err) {
                         return next(err);
                     }
+                    return res.status(200).json({ ok: "ok" });
                 });
-                return res.status(200);
             }
         })(req, res, next);
     })),

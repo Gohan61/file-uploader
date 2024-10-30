@@ -49,6 +49,7 @@ passport_1.default.deserializeUser((id, done) => __awaiter(void 0, void 0, void 
                 id: id,
             },
         });
+        done(null, user);
     }
     catch (err) {
         done(err);

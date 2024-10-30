@@ -28,15 +28,17 @@ model Folder {
 }
 
 model Files {
-  id        Int       @id @default(autoincrement())
-  title     String    @db.VarChar(255)
-  owner     User      @relation(fields: [ownerId], references: [id])
-  ownerId   Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  link      String
-  Folder    Folder?   @relation(fields: [folderId], references: [id])
-  folderId  Int?
+  id         Int       @id @default(autoincrement())
+  title      String    @db.VarChar(255)
+  owner      User      @relation(fields: [ownerId], references: [id])
+  ownerId    Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  size       String    @default("0 kb")
+  uploadTime Int       @default(0)
+  link       String
+  Folder     Folder?   @relation(fields: [folderId], references: [id])
+  folderId   Int?
 }
 
 model Session {

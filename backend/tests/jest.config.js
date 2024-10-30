@@ -3,4 +3,5 @@ module.exports = {
   testEnvironment: "node",
   transform: {},
   extensionsToTreatAsEsm: [".ts"],
+  clearMocks: true,
 };
