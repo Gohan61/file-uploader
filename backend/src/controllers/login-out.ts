@@ -5,15 +5,28 @@ import { PrismaClient } from "@prisma/client";
 import passport from "passport";
 import type { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const prisma = new PrismaClient();
 
 export const signup = [
-  body("username", "Username cannot be empty").trim().isLength({ min: 1 }),
-  body("name").trim().optional(),
-  body("password", "Password cannot be empty").trim().isLength({ min: 1 }),
+  body("username", "Username cannot be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .isLength({ max: 20 })
+    .withMessage("Username can be maximum 20 characters"),
+  body("name")
+    .trim()
+    .optional()
+    .isLength({ max: 100 })
+    .withMessage("Name can be maximum 100 characters"),
+  body("password", "Password cannot be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .isLength({ max: 32 })
+    .withMessage("Password can be maxium 32 characters"),
 
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res, next): Promise<any> => {
     const errors = validationResult(req);
     const body: {
       username: string;
@@ -21,22 +34,29 @@ export const signup = [
       password: string;
     } = req.body;
 
+    if (!errors.isEmpty()) {
+      return res.status(500).json({ errors: errors.array() });
+    }
+
     try {
-      bcrypt.hash(body.password, 10, async (err, hashedPassword) => {
-        const user = await prisma.user.create({
-          data: {
-            username: body.username,
-            name: body.name,
-            password: hashedPassword,
-          },
-        });
-        if (!errors.isEmpty()) {
-          res.status(500).json({ errors: errors.array(), user: user });
-        } else {
-          res.status(200).json({ message: "User saved" });
-        }
+      const hashedPassword = bcrypt.hashSync(body.password, 10);
+
+      const user = await prisma.user.create({
+        data: {
+          username: body.username,
+          name: body.name,
+          password: hashedPassword,
+        },
       });
+
+      return res.status(200).json({ message: "User saved" });
     } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P2002") {
+          return res.status(500).json({ errors: "Username already exists" });
+        }
+      }
+
       return next(err);
     }
   }),
