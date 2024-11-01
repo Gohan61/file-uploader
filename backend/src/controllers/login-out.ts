@@ -77,10 +77,9 @@ export const signin = [
 
     passport.authenticate("local", (err: any, user: any, info: any) => {
       if (err) {
-        return next(err);
-      }
-      if (!user) {
-        res.status(404).json({ error: "User not found", user });
+        return res.status(404).json({ errors: err });
+      } else if (!user) {
+        return res.status(404).json({ errors: "User not found", user });
       } else {
         req.login(user, (err) => {
           if (err) {
