@@ -109,6 +109,16 @@ describe("CRUD Folders", () => {
       });
   });
 
+  it("Returns all folders that user owns", async () => {
+    await session
+      .get("/folders/")
+      .type("form")
+      .then((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body.folders.length).toBe(2);
+      });
+  });
+
   it("Returns errors deleting non-existing folder", async () => {
     const res = await request(app)
       .delete("/folders/non-existing")
