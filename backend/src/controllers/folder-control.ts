@@ -8,14 +8,22 @@ const prisma = new PrismaClient();
 export const newFolder = [
   body("title", "Title cannot be empty").trim().isLength({ min: 1 }),
 
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res, next): Promise<any> => {
     const errors = validationResult(req);
     const body: { title: string } = req.body;
-    const fileName = await prisma.folder.findUnique({
-      where: {
-        title: body.title,
-      },
-    });
+    const userId: number | undefined = (req.user as User).id;
+    let fileName;
+
+    if (userId) {
+      fileName = await prisma.folder.findUnique({
+        where: {
+          title: body.title,
+          userId: userId,
+        },
+      });
+    } else {
+      return res.status(404).json({ errors: "Something went wrong" });
+    }
 
     if (!errors.isEmpty()) {
       res.status(500).json({ errors: errors.array() });
@@ -34,14 +42,22 @@ export const newFolder = [
 
 export const getFolder = asyncHandler(async (req, res, next): Promise<any> => {
   const body: { title: string } = req.body;
-  const folder = await prisma.folder.findMany({
-    where: {
-      title: body.title,
-    },
-    include: {
-      files: true,
-    },
-  });
+  const userId: number | undefined = (req.user as User).id;
+  let folder;
+
+  if (userId) {
+    folder = await prisma.folder.findMany({
+      where: {
+        title: body.title,
+        userId: userId,
+      },
+      include: {
+        files: true,
+      },
+    });
+  } else {
+    return res.status(404).json({ errors: "Something went wrong" });
+  }
 
   if (!folder.length) {
     return res.status(404).json({ error: "Could not find folder" });
@@ -53,11 +69,18 @@ export const getFolder = asyncHandler(async (req, res, next): Promise<any> => {
 export const deleteFolder = asyncHandler(
   async (req, res, next): Promise<any> => {
     const fileTitle: string = req.params.title;
-    const folder = await prisma.folder.findUnique({
-      where: {
-        title: fileTitle,
-      },
-    });
+    const userId: number | undefined = (req.user as User).id;
+    let folder;
+
+    if (userId) {
+      folder = await prisma.folder.findUnique({
+        where: {
+          title: fileTitle,
+        },
+      });
+    } else {
+      return res.status(404).json({ errors: "Something went wrong" });
+    }
 
     if (!folder) {
       return res.status(404).json({ error: "Could not find folder" });
@@ -78,20 +101,27 @@ export const updateFolder = [
   asyncHandler(async (req, res, next): Promise<any> => {
     const errors = validationResult(req);
     const body: { id: string; newTitle: string } = req.body;
+    const userId: number | undefined = (req.user as User).id;
     const title: string = req.params.title;
+    let file;
 
     if (!errors.isEmpty()) {
       res.status(500).json({ errors: errors.array() });
     }
 
-    const file = await prisma.folder.findUnique({
-      where: {
-        title: body.newTitle,
-        NOT: {
-          id: Number(body.id),
+    if (userId) {
+      file = await prisma.folder.findUnique({
+        where: {
+          title: body.newTitle,
+          userId: userId,
+          NOT: {
+            id: Number(body.id),
+          },
         },
-      },
-    });
+      });
+    } else {
+      return res.status(404).json({ errors: "Something went wrong" });
+    }
 
     if (file) {
       return res.status(500).json({ message: "Folder name already exists" });
@@ -99,6 +129,8 @@ export const updateFolder = [
       await prisma.folder.update({
         where: {
           id: Number(body.id),
+          title: title,
+          userId: userId,
         },
         data: {
           title: body.newTitle,
@@ -112,25 +144,18 @@ export const updateFolder = [
 
 export const getAllFolders = asyncHandler(
   async (req, res, next): Promise<any> => {
-    let user;
-    if (req.user) {
-      const userId: number | undefined = (req.user as User).id;
+    const userId: number | undefined = (req.user as User).id;
+    let folders;
 
-      user = await prisma.user.findUnique({
+    if (userId) {
+      folders = await prisma.folder.findMany({
         where: {
-          id: Number(userId),
+          userId: userId,
         },
       });
-    }
-    if (!user) {
+    } else {
       return res.status(404).json({ errors: "Something went wrong" });
     }
-
-    const folders = await prisma.folder.findMany({
-      where: {
-        userId: user.id,
-      },
-    });
 
     if (!folders) {
       return res.status(404).json({ errors: "No folders found" });
