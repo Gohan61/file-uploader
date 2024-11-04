@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import {
   deleteFolder,
+  getAllFolders,
   getFolder,
   newFolder,
   updateFolder,
@@ -9,6 +10,8 @@ import {
 export const folderRouter = express.Router();
 
 folderRouter.post("/new", newFolder);
+
+folderRouter.get("/", getAllFolders);
 
 folderRouter.get("/:title", getFolder);
 

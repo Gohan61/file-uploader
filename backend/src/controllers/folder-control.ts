@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -109,3 +109,33 @@ export const updateFolder = [
     }
   }),
 ];
+
+export const getAllFolders = asyncHandler(
+  async (req, res, next): Promise<any> => {
+    let user;
+    if (req.user) {
+      const userId: number | undefined = (req.user as User).id;
+
+      user = await prisma.user.findUnique({
+        where: {
+          id: Number(userId),
+        },
+      });
+    }
+    if (!user) {
+      return res.status(404).json({ errors: "Something went wrong" });
+    }
+
+    const folders = await prisma.folder.findMany({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    if (!folders) {
+      return res.status(404).json({ errors: "No folders found" });
+    } else {
+      return res.status(200).json({ folders: folders });
+    }
+  }
+);
