@@ -1,7 +1,8 @@
-import request, { CallbackHandler } from "supertest";
-import express from "express";
+import request from "supertest-session";
+import { SuperTest, Session } from "supertest-session";
+import { beforeAll, afterAll, describe, it, expect } from "@jest/globals";
+import express, { application } from "express";
 import { PrismaClient } from "@prisma/client";
-import "../src/config/passport";
 import { seed } from "../src/config/seed";
 import middleWare from "../src/config/middleware-for-tests";
 
@@ -22,19 +23,26 @@ const prisma = new PrismaClient({
   },
 });
 
-beforeAll(async () => {
-  await seed();
-});
-
-afterAll(async () => {
-  await prisma.files.deleteMany({});
-  await prisma.user.deleteMany({});
-  await prisma.folder.deleteMany({});
-});
-
 describe("CRUD Folders", () => {
+  let session: SuperTest<Session>;
+
+  beforeAll(async () => {
+    await prisma.files.deleteMany({});
+    await prisma.folder.deleteMany({});
+    await prisma.user.deleteMany({});
+
+    await seed();
+    session = request(app);
+  });
+
+  afterAll(async () => {
+    await prisma.files.deleteMany({});
+    await prisma.folder.deleteMany({});
+    await prisma.user.deleteMany({});
+  });
+
   it("Sign user in", async () => {
-    const res = await request(app)
+    await session
       .post("/signin")
       .type("form")
       .send({ username: "testing", password: "testing" })
@@ -44,7 +52,7 @@ describe("CRUD Folders", () => {
   });
 
   it("Succesfully creates new folder", async () => {
-    const res = await request(app)
+    await session
       .post("/folders/new")
       .type("form")
       .send({ title: "Another folder" })
@@ -55,7 +63,7 @@ describe("CRUD Folders", () => {
   });
 
   it("Returns error on duplicate file name", async () => {
-    const res = await request(app)
+    await session
       .post("/folders/new")
       .type("form")
       .send({ title: "Test folder" })
@@ -66,7 +74,7 @@ describe("CRUD Folders", () => {
   });
 
   it("Returns folder and contents", async () => {
-    const res = await request(app)
+    await session
       .get("/folders/Test folder")
       .type("form")
       .send({ title: "Test folder" })
@@ -77,7 +85,7 @@ describe("CRUD Folders", () => {
   });
 
   it("Returns error on non-existing folder", async () => {
-    const res = await request(app)
+    await session
       .get("/folders/non existing")
       .type("form")
       .send({ title: "non existing" })
@@ -88,7 +96,7 @@ describe("CRUD Folders", () => {
   });
 
   it("Returns error on update to existing folder name", async () => {
-    const res = await request(app)
+    await session
       .put("/folders/Test folder")
       .type("form")
       .send({ newTitle: "Second folder", id: 1 })
@@ -99,7 +107,7 @@ describe("CRUD Folders", () => {
   });
 
   it("Updates folder name", async () => {
-    const res = await request(app)
+    await session
       .put("/folders/Test folder")
       .type("form")
       .send({ newTitle: "Tested folder", id: 1 })
@@ -120,7 +128,7 @@ describe("CRUD Folders", () => {
   });
 
   it("Returns errors deleting non-existing folder", async () => {
-    const res = await request(app)
+    await session
       .delete("/folders/non-existing")
       .type("form")
       .then((res) => {
@@ -130,7 +138,7 @@ describe("CRUD Folders", () => {
   });
 
   it("Deletes an existing folder", async () => {
-    const res = await request(app)
+    await session
       .delete("/folders/Tested folder")
       .type("form")
       .then((res) => {

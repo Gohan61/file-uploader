@@ -1,4 +1,5 @@
 import request from "supertest";
+import { beforeAll, afterAll, describe, it, expect } from "@jest/globals";
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import "../src/config/passport";
@@ -21,7 +22,15 @@ const prisma = new PrismaClient({
   },
 });
 
+beforeAll(async () => {
+  await prisma.files.deleteMany({});
+  await prisma.folder.deleteMany({});
+  await prisma.user.deleteMany({});
+});
+
 afterAll(async () => {
+  await prisma.files.deleteMany({});
+  await prisma.folder.deleteMany({});
   await prisma.user.deleteMany({});
 });
 

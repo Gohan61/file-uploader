@@ -1,7 +1,8 @@
-import request from "supertest";
+import request from "supertest-session";
+import { SuperTest, Session } from "supertest-session";
+import { beforeAll, afterAll, describe, it, expect } from "@jest/globals";
 import express from "express";
 import { PrismaClient } from "@prisma/client";
-import "../src/config/passport";
 import "../src/config/passport";
 import { seed } from "../src/config/seed";
 import middleWare from "../src/config/middleware-for-tests";
@@ -23,18 +24,26 @@ const prisma = new PrismaClient({
   },
 });
 
-beforeAll(async () => {
-  await seed();
-});
-
-afterAll(async () => {
-  await prisma.user.deleteMany({});
-  await prisma.files.deleteMany({});
-});
-
 describe("User can upload files", () => {
+  let session: SuperTest<Session>;
+
+  beforeAll(async () => {
+    await prisma.files.deleteMany({});
+    await prisma.folder.deleteMany({});
+    await prisma.user.deleteMany({});
+
+    await seed();
+    session = request(app);
+  });
+
+  afterAll(async () => {
+    await prisma.files.deleteMany({});
+    await prisma.folder.deleteMany({});
+    await prisma.user.deleteMany({});
+  });
+
   it("sign user in", async () => {
-    const res = await request(app)
+    await session
       .post("/signin")
       .type("form")
       .send({ username: "testing", password: "testing" })
@@ -44,7 +53,7 @@ describe("User can upload files", () => {
   });
 
   it("Returns on no file", async () => {
-    const res = await request(app)
+    await session
       .post("/files/newFile")
       .type("form")
       .send({ name: "text" })
@@ -55,7 +64,7 @@ describe("User can upload files", () => {
   });
 
   it("Returns on no file delete route", async () => {
-    const res = await request(app)
+    await session
       .delete("/files/12")
       .type("form")
       .then((res) => {
@@ -65,7 +74,7 @@ describe("User can upload files", () => {
   });
 
   it("Returns details of file", async () => {
-    const res = await request(app)
+    await session
       .get("/files/1")
       .type("form")
       .then((res) => {
@@ -75,7 +84,7 @@ describe("User can upload files", () => {
   });
 
   it("Returns error on non-existing file", async () => {
-    const res = await request(app)
+    await session
       .get("/files/13")
       .type("form")
       .then((res) => {
@@ -85,7 +94,7 @@ describe("User can upload files", () => {
   });
 
   it("Updates file name + folder", async () => {
-    const res = await request(app)
+    await session
       .put("/files/1")
       .type("form")
       .send({ newFolder: "Second folder", newTitle: "New Title" })
@@ -96,7 +105,7 @@ describe("User can upload files", () => {
   });
 
   it("Returns error on non-existing folder", async () => {
-    const res = await request(app)
+    await session
       .put("/files/1")
       .type("form")
       .send({ newFolder: "Third folder" })
@@ -107,7 +116,7 @@ describe("User can upload files", () => {
   });
 
   it("Succesfully returns on delete file", async () => {
-    const res = await request(app)
+    await session
       .delete("/files/1")
       .type("form")
       .then((res) => {
