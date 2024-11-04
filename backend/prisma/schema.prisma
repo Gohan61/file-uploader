@@ -14,17 +14,20 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
-  password String  @db.VarChar(255)
+  id       Int      @id @default(autoincrement())
+  username String   @unique
+  password String   @db.VarChar(255)
   name     String?
   files    Files[]
+  folders  Folder[]
 }
 
 model Folder {
-  id    Int     @id @default(autoincrement())
-  title String  @unique @db.VarChar(255)
-  files Files[]
+  id     Int     @id @default(autoincrement())
+  title  String  @unique @default("main") @db.VarChar(255)
+  files  Files[]
+  User   User?   @relation(fields: [userId], references: [id])
+  userId Int?
 }
 
 model Files {
