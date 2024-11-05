@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function Signin() {
   const [signinForm, setSigninForm] = useState({ username: "", password: "" });
@@ -7,6 +8,11 @@ export default function Signin() {
     username: "",
     password: "",
   });
+  const {
+    setLoginStatus,
+  }: { setLoginStatus: React.Dispatch<React.SetStateAction<boolean>> } =
+    useOutletContext();
+  const navigate = useNavigate();
 
   function focusValidation(element: string) {
     if (signinForm.username === "" && element === "username") {
@@ -30,6 +36,7 @@ export default function Signin() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         username: signinForm.username,
         password: signinForm.password,
@@ -41,10 +48,9 @@ export default function Signin() {
       })
       .then((res) => {
         if (respStatus === 200) {
-          console.log("ok");
+          setLoginStatus(true);
+          navigate("/home");
         } else {
-          console.log(res);
-
           throw res.errors;
         }
       })
