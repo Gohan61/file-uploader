@@ -92,3 +92,26 @@ export const signin = [
     })(req, res, next);
   }),
 ];
+
+export const logout = asyncHandler(async (req, res, next): Promise<any> => {
+  console.log(req);
+
+  const sessionId: string | undefined = req.sessionID;
+
+  try {
+    if (sessionId) {
+      await prisma.session.delete({
+        where: {
+          id: sessionId,
+        },
+      });
+      return res.status(200).json({ message: "Logout successful" });
+    } else {
+      return res.status(404).json({ errors: "Something went wrong" });
+    }
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ errors: "Logout failed, please refresh your page" });
+  }
+});
