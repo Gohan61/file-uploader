@@ -157,7 +157,7 @@ export const getAllFolders = asyncHandler(
       return res.status(404).json({ errors: "Something went wrong" });
     }
 
-    if (!folders) {
+    if (!folders || folders.length === 0) {
       return res.status(404).json({ errors: "No folders found" });
     } else {
       return res.status(200).json({ folders: folders });
