@@ -41,14 +41,14 @@ export const newFolder = [
 ];
 
 export const getFolder = asyncHandler(async (req, res, next): Promise<any> => {
-  const body: { title: string } = req.body;
+  const title: string | undefined = req.params.title;
   const userId: number | undefined = (req.user as User).id;
   let folder;
 
   if (userId) {
     folder = await prisma.folder.findMany({
       where: {
-        title: body.title,
+        title: title,
         userId: userId,
       },
       include: {
@@ -60,7 +60,7 @@ export const getFolder = asyncHandler(async (req, res, next): Promise<any> => {
   }
 
   if (!folder.length) {
-    return res.status(404).json({ error: "Could not find folder" });
+    return res.status(404).json({ errors: "Could not find folder" });
   } else {
     return res.status(200).json({ folder: folder });
   }
