@@ -46,6 +46,11 @@ export const signup = [
           username: body.username,
           name: body.name,
           password: hashedPassword,
+          folders: {
+            create: {
+              title: "main",
+            },
+          },
         },
       });
 
