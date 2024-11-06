@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { Folders } from "../types/types";
 
 export default function Signin() {
   const [signinForm, setSigninForm] = useState({ username: "", password: "" });
@@ -10,8 +11,11 @@ export default function Signin() {
   });
   const {
     setLoginStatus,
-  }: { setLoginStatus: React.Dispatch<React.SetStateAction<boolean>> } =
-    useOutletContext();
+    getFolders,
+  }: {
+    setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>;
+    getFolders: Folders;
+  } = useOutletContext();
   const navigate = useNavigate();
 
   function focusValidation(element: string) {
@@ -98,7 +102,14 @@ export default function Signin() {
         {<p>{inputValidation.password}</p>}
         {error.password ? <p>{error.password}</p> : ""}
         {error.user ? <p>{error.user}</p> : ""}
-        <button onClick={(e) => handleSignin(e)}>Sign in</button>
+        <button
+          onClick={(e) => {
+            handleSignin(e);
+            getFolders();
+          }}
+        >
+          Sign in
+        </button>
       </form>
     </div>
   );

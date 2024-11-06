@@ -1,5 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../types/types";
+import { folderData, folderType } from "../types/types";
 
 export default function Navbar({
   props,
@@ -7,6 +9,8 @@ export default function Navbar({
   props: {
     loginStatus: boolean;
     setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>;
+    folders: folderData;
+    error: string | undefined;
   };
 }) {
   const navigate = useNavigate();
@@ -52,9 +56,17 @@ export default function Navbar({
             <li>
               <Link to={"/home"}>Home</Link>
             </li>
+            {props.folders.folders.map((folder: folderType) => {
+              return (
+                <li key={folder.id}>
+                  <button>{folder.title}</button>
+                </li>
+              );
+            })}
           </ul>
           <button onClick={(e) => logout(e)}>Logout</button>
           {error ? <p>{error}</p> : ""}
+          {props.error ? <p>{props.error}</p> : ""}
         </nav>
       ) : (
         <>
