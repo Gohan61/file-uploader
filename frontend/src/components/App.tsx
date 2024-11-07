@@ -41,7 +41,7 @@ export default function App() {
     <>
       <Navbar props={{ loginStatus, setLoginStatus, folders, error }}></Navbar>
       <Outlet
-        context={{ loginStatus, setLoginStatus, getFolders, files }}
+        context={{ loginStatus, setLoginStatus, getFolders, files, folders }}
       ></Outlet>
     </>
   );

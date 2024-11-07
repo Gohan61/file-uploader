@@ -1,6 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 import cloud from "../assets/cloud-storage.png";
 import { fileData, fileType } from "../types/types";
+import Upload from "./Upload";
 
 export default function HomePage() {
   const {
@@ -12,7 +13,10 @@ export default function HomePage() {
     <div>
       <img src={cloud} alt="Cloud representing cloud storage" />
       {loginStatus ? (
-        <div> {contextFiles.data.length === 0 ? <p>No files</p> : ""}</div>
+        <>
+          <Upload></Upload>
+          <div> {contextFiles.data.length === 0 ? <p>No files</p> : ""}</div>
+        </>
       ) : (
         ""
       )}
