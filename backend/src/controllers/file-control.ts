@@ -23,7 +23,7 @@ export const newFile = [
         (Number(req.file?.size) / (1024 * 1024)).toFixed(2) + " MB";
       const ownerId = Number(user.id);
       const folderId = Number(body.folderId);
-      const createdAt = formatRelative(subDays(new Date(), 3), new Date());
+      const createdAt = formatRelative(subDays(new Date(), 0), new Date());
       const fileName: string = req.file.filename;
 
       file = await prisma.files.create({
