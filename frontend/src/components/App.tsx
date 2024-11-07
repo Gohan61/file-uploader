@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useState } from "react";
-import { folderData } from "../types/types";
+import { fileData, fileType, folderData } from "../types/types";
 
 export default function App() {
   const [loginStatus, setLoginStatus] = useState(false);
   const [folders, setFolder] = useState<folderData>({ folders: [] });
   const [error, setError] = useState("");
+  const [files, setFiles] = useState<fileData>({ data: [] });
 
   function getFolders() {
     let respStatus: number;
@@ -39,7 +40,9 @@ export default function App() {
   return (
     <>
       <Navbar props={{ loginStatus, setLoginStatus, folders, error }}></Navbar>
-      <Outlet context={{ loginStatus, setLoginStatus, getFolders }}></Outlet>
+      <Outlet
+        context={{ loginStatus, setLoginStatus, getFolders, files }}
+      ></Outlet>
     </>
   );
 }

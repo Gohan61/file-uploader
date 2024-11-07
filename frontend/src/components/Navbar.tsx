@@ -45,6 +45,38 @@ export default function Navbar({
       });
   }
 
+  function getFolder(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    folder: string
+  ) {
+    e.preventDefault();
+
+    let respStatus: number;
+
+    fetch(`http://localhost:3000/folders/${folder}`, {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => {
+        respStatus = res.status;
+        return res.json();
+      })
+      .then((res) => {
+        if (respStatus === 200) {
+          console.log(res);
+        } else {
+          throw res.errors;
+        }
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  }
+
   return (
     <>
       <h1>
@@ -59,7 +91,9 @@ export default function Navbar({
             {props.folders.folders.map((folder: folderType) => {
               return (
                 <li key={folder.id}>
-                  <button>{folder.title}</button>
+                  <button onClick={(e) => getFolder(e, folder.title)}>
+                    {folder.title}
+                  </button>
                 </li>
               );
             })}
