@@ -53,6 +53,8 @@ export default function Signin() {
       .then((res) => {
         if (respStatus === 200) {
           setLoginStatus(true);
+          getFolders();
+
           navigate("/home");
         } else {
           throw res.errors;
@@ -105,7 +107,6 @@ export default function Signin() {
         <button
           onClick={(e) => {
             handleSignin(e);
-            getFolders();
           }}
         >
           Sign in
