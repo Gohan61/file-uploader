@@ -9,7 +9,7 @@ import { upload } from "../config/upload";
 
 export const fileRouter = express.Router();
 
-fileRouter.post("/newfile", upload.single("text"), newFile);
+fileRouter.post("/newfile", upload.single("file"), newFile);
 
 fileRouter.delete("/:file", deleteFile);
 
