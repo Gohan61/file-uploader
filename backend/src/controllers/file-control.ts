@@ -3,6 +3,7 @@ import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { User } from "@prisma/client";
+import { format, formatDistance, formatRelative, subDays } from "date-fns";
 
 const prisma = new PrismaClient();
 
@@ -13,18 +14,24 @@ export const newFile = [
     let file;
     const body: { folderId: string; sendTime: string } = req.body;
     const user = req.user as User | undefined;
-    const uploadTimeSeconds = Math.round(
-      Date.now() - Number(body.sendTime) / 1000
-    );
-    const sizeInMB =
-      (Number(req.file?.size) / (1024 * 1024)).toFixed(2) + " MB";
 
     if (req.file && user) {
+      const uploadTimeSeconds = Math.round(
+        (Date.now() - Number(body.sendTime)) / 1000
+      );
+      const sizeInMB =
+        (Number(req.file?.size) / (1024 * 1024)).toFixed(2) + " MB";
+      const ownerId = Number(user.id);
+      const folderId = Number(body.folderId);
+      const createdAt = formatRelative(subDays(new Date(), 3), new Date());
+      const fileName: string = req.file.filename;
+
       file = await prisma.files.create({
         data: {
-          title: req.file.filename,
-          ownerId: Number(user.id),
-          folderId: Number(body.folderId),
+          title: fileName,
+          ownerId: ownerId,
+          folderId: folderId,
+          createdAt: createdAt,
           size: sizeInMB,
           uploadTime: uploadTimeSeconds,
           link: "test",
