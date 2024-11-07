@@ -9,3 +9,19 @@ export interface folderData {
 }
 
 export type Folders = () => void;
+
+export interface fileType {
+  id: number;
+  title: string;
+  ownerId: number;
+  createdAt: string;
+  updatedAt: string | undefined;
+  size: string;
+  uploadTime: number;
+  link: string;
+  folderId: number;
+}
+
+export interface fileData {
+  data: fileType[];
+}
