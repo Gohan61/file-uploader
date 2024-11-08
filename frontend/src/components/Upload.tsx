@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { folderData } from "../types/types";
 
 export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const { folders: folderList }: { folders: folderData } = useOutletContext();
-  const [uploadFolder, setUploadFolder] = useState<number>(
-    () => folderList.folders[0].id
-  );
+  const [uploadFolder, setUploadFolder] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState("");
   const [error, setError] = useState("");
   const [fileInputKey, setFileInputKey] = useState<number>(0);
+
+  useEffect(() => {
+    if (folderList.folders.length != 0) {
+      setUploadFolder(folderList.folders[0].id);
+    }
+  }, [folderList.folders]);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.currentTarget.files;
@@ -29,7 +33,9 @@ export default function Upload() {
     const formData = new FormData();
     formData.append("file", file as Blob);
     formData.append("sendTime", dateTime);
-    formData.append("folderId", uploadFolder.toString());
+    if (uploadFolder) {
+      formData.append("folderId", uploadFolder.toString());
+    }
 
     fetch("http://localhost:3000/files/newfile", {
       mode: "cors",
