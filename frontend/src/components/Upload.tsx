@@ -95,7 +95,6 @@ export default function Upload() {
         <select
           name="folder"
           id="folder"
-          defaultValue={"main"}
           value={uploadFolder}
           onChange={(e) => setUploadFolder(Number(e.target.value))}
         >
