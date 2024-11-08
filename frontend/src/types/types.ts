@@ -25,3 +25,8 @@ export interface fileType {
 export interface fileData {
   data: fileType[];
 }
+
+export type GetFolder = (
+  e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined,
+  folder: string
+) => void;
