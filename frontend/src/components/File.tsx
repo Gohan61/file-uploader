@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { fileData } from "../types/types";
+import { fileData, GetFolder } from "../types/types";
 import { useOutletContext } from "react-router-dom";
 
 export default function File() {
   const {
     files: contextFiles,
     setFiles,
+    currentFolder,
+    getFolder,
   }: {
     files: fileData;
     setFiles: React.Dispatch<React.SetStateAction<fileData>>;
+    currentFolder: string;
+    getFolder: GetFolder;
   } = useOutletContext();
   const [error, setError] = useState();
 
@@ -18,8 +22,6 @@ export default function File() {
   ) {
     e.preventDefault();
     let respStatus: number;
-    const fileIndex = contextFiles.data.findIndex((file) => file.id === fileId);
-    const newFiles = contextFiles.data.toSpliced(fileIndex, 1);
 
     fetch(`http://localhost:3000/files/${fileId}`, {
       mode: "cors",
@@ -34,7 +36,44 @@ export default function File() {
       })
       .then((res) => {
         if (respStatus === 200) {
-          setFiles({ data: newFiles });
+          getFolder(undefined, currentFolder);
+        } else {
+          throw res.errors;
+        }
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  }
+
+  function updateFile(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    fileId: number,
+    folder: string,
+    newTitle: string
+  ) {
+    let respStatus: number;
+    e.preventDefault();
+
+    fetch(`http://localhost:3000/files/${fileId}`, {
+      mode: "cors",
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        newTitle: newTitle,
+        newFolder: folder,
+      }),
+      credentials: "include",
+    })
+      .then((res) => {
+        respStatus = res.status;
+        return res.json();
+      })
+      .then((res) => {
+        if (respStatus === 200) {
+          getFolder(undefined, currentFolder);
         } else {
           throw res.errors;
         }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../types/types";
-import { fileData, folderData, folderType } from "../types/types";
+import { fileData, folderData, folderType, GetFolder } from "../types/types";
 
 export default function Navbar({
   props,
@@ -14,6 +14,7 @@ export default function Navbar({
     setFiles: React.Dispatch<React.SetStateAction<fileData>>;
     uploadFolder: number | undefined;
     loading: boolean;
+    getFolder: GetFolder;
   };
 }) {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function Navbar({
     });
 
     if (folderTitle) {
-      getFolder(undefined, folderTitle);
+      props.getFolder(undefined, folderTitle);
     }
   }, [props.loading]);
 
@@ -61,40 +62,6 @@ export default function Navbar({
       });
   }
 
-  function getFolder(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined,
-    folder: string
-  ) {
-    if (e) {
-      e.preventDefault();
-    }
-
-    let respStatus: number;
-
-    fetch(`http://localhost:3000/folders/${folder}`, {
-      mode: "cors",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((res) => {
-        respStatus = res.status;
-        return res.json();
-      })
-      .then((res) => {
-        if (respStatus === 200) {
-          props.setFiles({ data: res.folder[0].files });
-        } else {
-          throw res.errors;
-        }
-      })
-      .catch((err) => {
-        setError(err);
-      });
-  }
-
   return (
     <>
       <h1>
@@ -109,7 +76,11 @@ export default function Navbar({
             {props.folders.folders.map((folder: folderType) => {
               return (
                 <li key={folder.id}>
-                  <button onClick={(e) => getFolder(e, folder.title)}>
+                  <button
+                    onClick={(e) => {
+                      props.getFolder(e, folder.title);
+                    }}
+                  >
                     {folder.title}
                   </button>
                 </li>

@@ -10,6 +10,7 @@ export default function App() {
   const [files, setFiles] = useState<fileData>({ data: [] });
   const [uploadFolder, setUploadFolder] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
+  const [currentFolder, setCurrentFolder] = useState<string>("main");
 
   function getFolders() {
     let respStatus: number;
@@ -39,6 +40,41 @@ export default function App() {
         setError(err);
       });
   }
+
+  function getFolder(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined,
+    folder: string
+  ) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    let respStatus: number;
+
+    fetch(`http://localhost:3000/folders/${folder}`, {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => {
+        respStatus = res.status;
+        return res.json();
+      })
+      .then((res) => {
+        if (respStatus === 200) {
+          setFiles({ data: res.folder[0].files });
+          setCurrentFolder(folder);
+        } else {
+          throw res.errors;
+        }
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  }
   return (
     <>
       <Navbar
@@ -50,6 +86,7 @@ export default function App() {
           setFiles,
           uploadFolder,
           loading,
+          getFolder,
         }}
       ></Navbar>
       <Outlet
@@ -64,6 +101,8 @@ export default function App() {
           setUploadFolder,
           loading,
           setLoading,
+          currentFolder,
+          getFolder,
         }}
       ></Outlet>
     </>
