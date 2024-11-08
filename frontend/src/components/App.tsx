@@ -58,6 +58,7 @@ export default function App() {
           setLoginStatus,
           getFolders,
           files,
+          setFiles,
           folders,
           uploadFolder,
           setUploadFolder,
