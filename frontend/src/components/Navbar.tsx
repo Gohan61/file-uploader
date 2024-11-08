@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../types/types";
-import { folderData, folderType } from "../types/types";
+import { fileData, folderData, folderType } from "../types/types";
 
 export default function Navbar({
   props,
@@ -11,10 +11,26 @@ export default function Navbar({
     setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>;
     folders: folderData;
     error: string | undefined;
+    setFiles: React.Dispatch<React.SetStateAction<fileData>>;
+    uploadFolder: number | undefined;
+    loading: boolean;
   };
 }) {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    let folderTitle;
+    props.folders.folders.map((folder) => {
+      if (folder.id === props.uploadFolder) {
+        return (folderTitle = folder.title);
+      }
+    });
+
+    if (folderTitle) {
+      getFolder(undefined, folderTitle);
+    }
+  }, [props.loading]);
 
   function logout(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
@@ -46,10 +62,12 @@ export default function Navbar({
   }
 
   function getFolder(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined,
     folder: string
   ) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
 
     let respStatus: number;
 
@@ -67,7 +85,7 @@ export default function Navbar({
       })
       .then((res) => {
         if (respStatus === 200) {
-          console.log(res);
+          props.setFiles({ data: res.folder[0].files });
         } else {
           throw res.errors;
         }

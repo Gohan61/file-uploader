@@ -5,11 +5,21 @@ import { folderData } from "../types/types";
 export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const { folders: folderList }: { folders: folderData } = useOutletContext();
-  const [uploadFolder, setUploadFolder] = useState<number | undefined>();
-  const [loading, setLoading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState("");
   const [error, setError] = useState("");
   const [fileInputKey, setFileInputKey] = useState<number>(0);
+
+  const {
+    uploadFolder,
+    setUploadFolder,
+    loading,
+    setLoading,
+  }: {
+    uploadFolder: number | undefined;
+    setUploadFolder: React.Dispatch<React.SetStateAction<number>>;
+    loading: boolean;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  } = useOutletContext();
 
   useEffect(() => {
     if (folderList.folders.length != 0) {

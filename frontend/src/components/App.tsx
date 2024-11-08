@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fileData, fileType, folderData } from "../types/types";
 
 export default function App() {
@@ -8,6 +8,8 @@ export default function App() {
   const [folders, setFolder] = useState<folderData>({ folders: [] });
   const [error, setError] = useState("");
   const [files, setFiles] = useState<fileData>({ data: [] });
+  const [uploadFolder, setUploadFolder] = useState<number | undefined>();
+  const [loading, setLoading] = useState(false);
 
   function getFolders() {
     let respStatus: number;
@@ -39,9 +41,29 @@ export default function App() {
   }
   return (
     <>
-      <Navbar props={{ loginStatus, setLoginStatus, folders, error }}></Navbar>
+      <Navbar
+        props={{
+          loginStatus,
+          setLoginStatus,
+          folders,
+          error,
+          setFiles,
+          uploadFolder,
+          loading,
+        }}
+      ></Navbar>
       <Outlet
-        context={{ loginStatus, setLoginStatus, getFolders, files, folders }}
+        context={{
+          loginStatus,
+          setLoginStatus,
+          getFolders,
+          files,
+          folders,
+          uploadFolder,
+          setUploadFolder,
+          loading,
+          setLoading,
+        }}
       ></Outlet>
     </>
   );
