@@ -95,11 +95,9 @@ export const deleteFolder = asyncHandler(
         .status(500)
         .json({ errors: "Can't delete default folder main" });
     } else if (folder._count.files !== 0) {
-      return res
-        .status(500)
-        .json({
-          errors: "Folder is not empty, please move or delete files first",
-        });
+      return res.status(500).json({
+        errors: "Folder is not empty, please move or delete files first",
+      });
     } else {
       await prisma.folder.delete({
         where: {
@@ -122,7 +120,7 @@ export const updateFolder = [
     let file;
 
     if (!errors.isEmpty()) {
-      res.status(500).json({ errors: errors.array() });
+      return res.status(500).json({ errors: errors.array()[0].msg });
     }
 
     if (userId) {
@@ -141,6 +139,10 @@ export const updateFolder = [
 
     if (file) {
       return res.status(500).json({ message: "Folder name already exists" });
+    } else if (title === "main") {
+      return res
+        .status(500)
+        .json({ errors: "Cannot change default folder name" });
     } else {
       await prisma.folder.update({
         where: {
