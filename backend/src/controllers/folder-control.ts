@@ -28,14 +28,15 @@ export const newFolder = [
     if (!errors.isEmpty()) {
       res.status(500).json({ errors: errors.array() });
     } else if (fileName) {
-      res.status(500).json({ message: "Folder title already exists" });
+      res.status(500).json({ errors: "Folder name already exists" });
     } else {
       await prisma.folder.create({
         data: {
           title: body.title,
+          userId: userId,
         },
       });
-      res.status(200).json({ message: "Folder created" });
+      return res.status(200).json({ message: "Folder created" });
     }
   }),
 ];
