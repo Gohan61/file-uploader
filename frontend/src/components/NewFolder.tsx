@@ -39,8 +39,6 @@ export default function Folder({ getFolders }: { getFolders: Folders }) {
         }
       })
       .catch((err) => {
-        console.log(err);
-
         if (err instanceof Object) {
           setError(err[0].msg);
         } else {

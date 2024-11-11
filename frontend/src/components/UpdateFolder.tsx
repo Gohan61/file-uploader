@@ -56,8 +56,6 @@ export default function UpdateFolder({
           setNewFolderName("");
           setError("");
         } else {
-          console.log(res);
-
           throw res.errors;
         }
       })
@@ -69,7 +67,7 @@ export default function UpdateFolder({
   return (
     <>
       <button onClick={openDialog}>···</button>
-      <dialog id="dialog" ref={dialogRef}>
+      <dialog ref={dialogRef}>
         <form action="" method="PUT">
           <label htmlFor="newFolderName">New folder name: </label>
           <input

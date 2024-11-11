@@ -55,17 +55,13 @@ export default function DeleteFolder({
 
   return (
     <>
-      <button id="open" onClick={openDialog}>
-        Delete folder
-      </button>
-      <dialog id="dialog" ref={dialogRef}>
+      <button onClick={openDialog}>Delete folder</button>
+      <dialog ref={dialogRef}>
         <p>Are you sure you want to delete this folder?</p>
         <button onClick={(e) => deleteFolder(e, folderTitle)}>
           Yes, delete folder
         </button>
-        <button id="close" onClick={closeDialog}>
-          Close
-        </button>
+        <button onClick={closeDialog}>Close</button>
       </dialog>
 
       {error ? <p>{error}</p> : ""}
