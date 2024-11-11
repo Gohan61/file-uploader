@@ -10,6 +10,7 @@ import {
 } from "../types/types";
 import Folder from "./NewFolder";
 import DeleteFolder from "./DeleteFolder";
+import UpdateFolder from "./UpdateFolder";
 
 export default function Navbar({
   props,
@@ -95,10 +96,17 @@ export default function Navbar({
                   {folder.title === "main" ? (
                     ""
                   ) : (
-                    <DeleteFolder
-                      folderTitle={folder.title}
-                      getFolders={props.getFolders}
-                    ></DeleteFolder>
+                    <>
+                      <DeleteFolder
+                        folderTitle={folder.title}
+                        getFolders={props.getFolders}
+                      ></DeleteFolder>
+                      <UpdateFolder
+                        folderTitle={folder.title}
+                        getFolders={props.getFolders}
+                        folderId={folder.id}
+                      ></UpdateFolder>
+                    </>
                   )}
                 </li>
               );
