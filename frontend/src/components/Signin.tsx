@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { Folders } from "../types/types";
+import { Folders, GetFolder } from "../types/types";
 
 export default function Signin() {
   const [signinForm, setSigninForm] = useState({ username: "", password: "" });
@@ -12,9 +12,11 @@ export default function Signin() {
   const {
     setLoginStatus,
     getFolders,
+    getFolder,
   }: {
     setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>;
     getFolders: Folders;
+    getFolder: GetFolder;
   } = useOutletContext();
   const navigate = useNavigate();
 
@@ -52,8 +54,9 @@ export default function Signin() {
       })
       .then((res) => {
         if (respStatus === 200) {
-          setLoginStatus(true);
           getFolders();
+          getFolder(undefined, "main");
+          setLoginStatus(true);
 
           navigate("/home");
         } else {
