@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../types/types";
-import { fileData, folderData, folderType, GetFolder } from "../types/types";
+import {
+  fileData,
+  folderData,
+  Folders,
+  folderType,
+  GetFolder,
+} from "../types/types";
+import Folder from "./Folder";
 
 export default function Navbar({
   props,
@@ -15,6 +22,7 @@ export default function Navbar({
     uploadFolder: number | undefined;
     loading: boolean;
     getFolder: GetFolder;
+    getFolders: Folders;
   };
 }) {
   const navigate = useNavigate();
@@ -87,6 +95,7 @@ export default function Navbar({
               );
             })}
           </ul>
+          <Folder getFolders={props.getFolders}></Folder>
           <button onClick={(e) => logout(e)}>Logout</button>
           {error ? <p>{error}</p> : ""}
           {props.error ? <p>{props.error}</p> : ""}

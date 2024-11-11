@@ -28,8 +28,6 @@ export default function App() {
         return res.json();
       })
       .then((res) => {
-        console.log(res);
-
         if (respStatus === 200) {
           setFolder(res);
         } else {
@@ -87,6 +85,7 @@ export default function App() {
           uploadFolder,
           loading,
           getFolder,
+          getFolders,
         }}
       ></Navbar>
       <Outlet
