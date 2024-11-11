@@ -8,7 +8,8 @@ import {
   folderType,
   GetFolder,
 } from "../types/types";
-import Folder from "./Folder";
+import Folder from "./NewFolder";
+import DeleteFolder from "./DeleteFolder";
 
 export default function Navbar({
   props,
@@ -91,6 +92,14 @@ export default function Navbar({
                   >
                     {folder.title}
                   </button>
+                  {folder.title === "main" ? (
+                    ""
+                  ) : (
+                    <DeleteFolder
+                      folderTitle={folder.title}
+                      getFolders={props.getFolders}
+                    ></DeleteFolder>
+                  )}
                 </li>
               );
             })}
