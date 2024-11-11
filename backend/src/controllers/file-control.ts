@@ -107,7 +107,7 @@ export const updateFile = [
     if (!errors.isEmpty()) {
       return res.status(500).json({ errors: errors.array() });
     } else if (!file || !newFolder) {
-      return res.status(500).json({ error: "Folder or file does not exist" });
+      return res.status(500).json({ errors: "Folder or file does not exist" });
     } else {
       const updateFile = await prisma.files.update({
         where: {
