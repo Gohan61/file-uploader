@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Folders } from "../types/types";
 
 export default function DeleteFolder({
@@ -9,6 +9,17 @@ export default function DeleteFolder({
   getFolders: Folders;
 }) {
   const [error, setError] = useState("");
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const openDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+    }
+  };
+  const closeDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
+    }
+  };
 
   function deleteFolder(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -16,6 +27,7 @@ export default function DeleteFolder({
   ) {
     let respStatus: number;
     e.preventDefault();
+    closeDialog();
 
     fetch(`http://localhost:3000/folders/${title}`, {
       mode: "cors",
@@ -43,9 +55,19 @@ export default function DeleteFolder({
 
   return (
     <>
-      <button onClick={(e) => deleteFolder(e, folderTitle)}>
+      <button id="open" onClick={openDialog}>
         Delete folder
       </button>
+      <dialog id="dialog" ref={dialogRef}>
+        <p>Are you sure you want to delete this folder?</p>
+        <button onClick={(e) => deleteFolder(e, folderTitle)}>
+          Yes, delete folder
+        </button>
+        <button id="close" onClick={closeDialog}>
+          Close
+        </button>
+      </dialog>
+
       {error ? <p>{error}</p> : ""}
     </>
   );
