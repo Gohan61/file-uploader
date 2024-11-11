@@ -40,6 +40,9 @@ passport.deserializeUser(async (id: number, done) => {
       where: {
         id: id,
       },
+      omit: {
+        password: true,
+      },
     });
 
     done(null, user);
