@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fileData, fileType, folderData } from "../types/types";
 
 export default function App() {
@@ -11,6 +11,17 @@ export default function App() {
   const [uploadFolder, setUploadFolder] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
   const [currentFolder, setCurrentFolder] = useState<string>("main");
+  const sessionCookie = useRef<number | undefined>(
+    document.cookie.indexOf("connect.sid")
+  );
+
+  useEffect(() => {
+    if (sessionCookie) {
+      setLoginStatus(true);
+      getFolders();
+      getFolder(undefined, "main");
+    }
+  }, [sessionCookie]);
 
   function getFolders() {
     let respStatus: number;
