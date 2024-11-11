@@ -78,13 +78,28 @@ export const deleteFolder = asyncHandler(
         where: {
           title: fileTitle,
         },
+        include: {
+          _count: {
+            select: { files: true },
+          },
+        },
       });
     } else {
       return res.status(404).json({ errors: "Something went wrong" });
     }
 
     if (!folder) {
-      return res.status(404).json({ error: "Could not find folder" });
+      return res.status(404).json({ errors: "Could not find folder" });
+    } else if (folder.title === "main") {
+      return res
+        .status(500)
+        .json({ errors: "Can't delete default folder main" });
+    } else if (folder._count.files !== 0) {
+      return res
+        .status(500)
+        .json({
+          errors: "Folder is not empty, please move or delete files first",
+        });
     } else {
       await prisma.folder.delete({
         where: {
