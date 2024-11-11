@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
 import { fileData, GetFolder } from "../types/types";
 import { useOutletContext } from "react-router-dom";
+import DeleteFile from "./DeleteFile";
+import UpdateFile from "./UpdateFile";
 
 export default function File() {
   const {
@@ -14,86 +15,6 @@ export default function File() {
     currentFolder: string;
     getFolder: GetFolder;
   } = useOutletContext();
-  const [error, setError] = useState();
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const openDialog = () => {
-    if (dialogRef.current) {
-      dialogRef.current.showModal();
-    }
-  };
-  const closeDialog = () => {
-    if (dialogRef.current) {
-      dialogRef.current.close();
-    }
-  };
-
-  function deleteFile(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    fileId: number
-  ) {
-    e.preventDefault();
-    let respStatus: number;
-
-    fetch(`http://localhost:3000/files/${fileId}`, {
-      mode: "cors",
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        respStatus = res.status;
-        return res.json();
-      })
-      .then((res) => {
-        if (respStatus === 200) {
-          getFolder(undefined, currentFolder);
-        } else {
-          throw res.errors;
-        }
-      })
-      .catch((err) => {
-        setError(err);
-      });
-  }
-
-  function updateFile(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    fileId: number,
-    folder: string,
-    newTitle: string
-  ) {
-    let respStatus: number;
-    e.preventDefault();
-    closeDialog();
-
-    fetch(`http://localhost:3000/files/${fileId}`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        newTitle: newTitle,
-        newFolder: folder,
-      }),
-      credentials: "include",
-    })
-      .then((res) => {
-        respStatus = res.status;
-        return res.json();
-      })
-      .then((res) => {
-        if (respStatus === 200) {
-          getFolder(undefined, currentFolder);
-        } else {
-          throw res.errors;
-        }
-      })
-      .catch((err) => {
-        setError(err);
-      });
-  }
 
   return (
     <>
@@ -114,17 +35,20 @@ export default function File() {
               <span>Upload time: </span>
               {file.uploadTime} seconds
             </p>
-            <button onClick={openDialog}>Delete file</button>
-            <dialog ref={dialogRef}>
-              <button onClick={(e) => deleteFile(e, file.id)}>
-                Yes, delete file
-              </button>
-              <button onClick={closeDialog}>Close</button>
-            </dialog>
+            <UpdateFile
+              getFolder={getFolder}
+              currentFolder={currentFolder}
+              fileId={file.id}
+              currentFilename={file.title}
+            ></UpdateFile>
+            <DeleteFile
+              getFolder={getFolder}
+              currentFolder={currentFolder}
+              fileId={file.id}
+            ></DeleteFile>
           </div>
         );
       })}
-      {error ? <p>{error}</p> : ""}
     </>
   );
 }
