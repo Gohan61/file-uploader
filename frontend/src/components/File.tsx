@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { fileData, GetFolder } from "../types/types";
 import { useOutletContext } from "react-router-dom";
 
@@ -15,6 +15,17 @@ export default function File() {
     getFolder: GetFolder;
   } = useOutletContext();
   const [error, setError] = useState();
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const openDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+    }
+  };
+  const closeDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
+    }
+  };
 
   function deleteFile(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -54,6 +65,7 @@ export default function File() {
   ) {
     let respStatus: number;
     e.preventDefault();
+    closeDialog();
 
     fetch(`http://localhost:3000/files/${fileId}`, {
       mode: "cors",
@@ -102,7 +114,13 @@ export default function File() {
               <span>Upload time: </span>
               {file.uploadTime} seconds
             </p>
-            <button onClick={(e) => deleteFile(e, file.id)}>Delete file</button>
+            <button onClick={openDialog}>Delete file</button>
+            <dialog ref={dialogRef}>
+              <button onClick={(e) => deleteFile(e, file.id)}>
+                Yes, delete file
+              </button>
+              <button onClick={closeDialog}>Close</button>
+            </dialog>
           </div>
         );
       })}
