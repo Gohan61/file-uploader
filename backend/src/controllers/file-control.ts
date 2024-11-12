@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { User } from "@prisma/client";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
+import { handleUpload } from "../config/upload";
 
 const prisma = new PrismaClient();
 
@@ -16,33 +17,43 @@ export const newFile = [
     const user = req.user as User | undefined;
 
     if (req.file && user) {
-      const uploadTimeSeconds = Math.round(
-        (Date.now() - Number(body.sendTime)) / 1000
-      );
-      const sizeInMB =
-        (Number(req.file?.size) / (1024 * 1024)).toFixed(2) + " MB";
-      const ownerId = Number(user.id);
-      const folderId = Number(body.folderId);
-      const createdAt = format(new Date(), "PPPP");
-      const fileName: string = req.file.filename;
+      try {
+        const b64 = Buffer.from(req.file.buffer).toString("base64");
+        let dataUri = "data:" + req.file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataUri);
 
-      file = await prisma.files.create({
-        data: {
-          title: fileName,
-          ownerId: ownerId,
-          folderId: folderId,
-          createdAt: createdAt,
-          size: sizeInMB,
-          uploadTime: uploadTimeSeconds,
-          link: "test",
-        },
-      });
+        const uploadTimeSeconds = Math.round(
+          (Date.now() - Number(body.sendTime)) / 1000
+        );
+        const sizeInMB =
+          (Number(req.file?.size) / (1024 * 1024)).toFixed(2) + " MB";
+        const ownerId = Number(user.id);
+        const folderId = Number(body.folderId);
+        const createdAt = format(new Date(), "PPPP");
+        const fileName: string = req.file.originalname;
 
-      if (file) {
-        return res.status(200).json({ message: "File uploaded" });
+        file = await prisma.files.create({
+          data: {
+            title: fileName,
+            ownerId: ownerId,
+            folderId: folderId,
+            createdAt: createdAt,
+            size: sizeInMB,
+            uploadTime: uploadTimeSeconds,
+            link: cldRes.secure_url,
+          },
+        });
+
+        if (file) {
+          return res.status(200).json({ message: "File uploaded" });
+        }
+      } catch (err) {
+        return res.status(500).json({ errors: "Something went wrong" });
       }
+    } else if (req.file === undefined) {
+      return res.status(500).json({ errors: "No file selected" });
     } else {
-      return res.status(500).json({ error: "Something went wrong" });
+      return res.status(500).json({ errors: "Something went wrong" });
     }
   }),
 ];
