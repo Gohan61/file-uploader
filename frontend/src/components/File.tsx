@@ -2,6 +2,7 @@ import { fileData, GetFolder } from "../types/types";
 import { useOutletContext } from "react-router-dom";
 import DeleteFile from "./DeleteFile";
 import UpdateFile from "./UpdateFile";
+import { useState } from "react";
 
 export default function File() {
   const {
@@ -15,6 +16,7 @@ export default function File() {
     currentFolder: string;
     getFolder: GetFolder;
   } = useOutletContext();
+  const [showFileDetails, setShowFileDetails] = useState(false);
 
   return (
     <>
@@ -23,18 +25,36 @@ export default function File() {
         return (
           <div key={file.id}>
             <h3>{file.title}</h3>
-            <p>
-              <span>Created at: </span>
-              {file.createdAt}
-            </p>
-            <p>
-              <span>Size: </span>
-              {file.size}
-            </p>
-            <p>
-              <span>Upload time: </span>
-              {file.uploadTime} seconds
-            </p>
+            <button>Download file</button>
+            <button onClick={() => setShowFileDetails(!showFileDetails)}>
+              {showFileDetails ? "Hide" : "Show details"}
+            </button>
+            {showFileDetails ? (
+              <>
+                <p>
+                  <span>Created at: </span>
+                  {file.createdAt}
+                </p>
+                <p>
+                  <span>Size: </span>
+                  {file.size}
+                </p>
+                <p>
+                  <span>Upload time: </span>
+                  {file.uploadTime} seconds
+                </p>
+                {file.updatedAt ? (
+                  <p>
+                    <span>Updated at: </span>
+                    {file.updatedAt}
+                  </p>
+                ) : (
+                  ""
+                )}
+              </>
+            ) : (
+              ""
+            )}
             <UpdateFile
               getFolder={getFolder}
               currentFolder={currentFolder}
