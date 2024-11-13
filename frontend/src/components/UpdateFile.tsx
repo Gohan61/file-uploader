@@ -97,6 +97,7 @@ export default function UpdateFile({
     <>
       <button onClick={openDialog}>···</button>
       <dialog ref={dialogRef}>
+        <h2>Update folder name and/or current folder</h2>
         <form method="put">
           <label htmlFor="fileName">File name: </label>
           <input
