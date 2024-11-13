@@ -41,6 +41,7 @@ model Files {
   size       String  @default("0 kb") @db.VarChar(255)
   uploadTime Int     @default(0)
   link       String  @db.VarChar(255)
+  publicId   String? @db.VarChar(255)
   Folder     Folder? @relation(fields: [folderId], references: [id])
   folderId   Int?
 }
