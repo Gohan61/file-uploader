@@ -53,7 +53,19 @@ export const getFolder = asyncHandler(async (req, res, next): Promise<any> => {
         userId: userId,
       },
       include: {
-        files: true,
+        files: {
+          select: {
+            id: true,
+            title: true,
+            ownerId: true,
+            createdAt: true,
+            updatedAt: true,
+            size: true,
+            uploadTime: true,
+            link: false,
+            folderId: true,
+          },
+        },
       },
     });
   } else {
