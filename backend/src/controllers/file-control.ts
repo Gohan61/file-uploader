@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import { User } from "@prisma/client";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
 import { handleUpload } from "../config/upload";
+import { handleDelete } from "../config/upload";
 const { Readable } = require("stream");
 import { pipeline } from "node:stream/promises";
 
@@ -43,6 +44,7 @@ export const newFile = [
             size: sizeInMB,
             uploadTime: uploadTimeSeconds,
             link: cldRes.url,
+            publicId: cldRes.public_id,
           },
         });
 
@@ -73,13 +75,23 @@ export const deleteFile = asyncHandler(
       return res.status(500).json({ error: "File not found" });
     }
 
-    await prisma.files.delete({
-      where: {
-        id: file.id,
-      },
-    });
+    try {
+      await prisma.files.delete({
+        where: {
+          id: file.id,
+        },
+      });
 
-    return res.status(200).json({ message: "File deleted" });
+      const deleteCloud = await handleDelete(file.publicId!);
+
+      if (deleteCloud.result != "ok") {
+        return res.status(500).json({ errors: deleteCloud.result });
+      }
+
+      return res.status(200).json({ message: "File deleted" });
+    } catch (err) {
+      return res.status(500).json({ errors: err });
+    }
   }
 );
 

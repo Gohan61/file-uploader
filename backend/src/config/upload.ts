@@ -10,8 +10,18 @@ cloudinary.config({
 
 export async function handleUpload(file: string) {
   const res = await cloudinary.uploader.upload(file, {
-    resource_type: "auto",
+    resource_type: "raw",
   });
+  return res;
+}
+
+export async function handleDelete(public_id: string) {
+  const res = await cloudinary.uploader.destroy(
+    public_id,
+    { resource_type: "raw" },
+    (result: any) => result
+  );
+
   return res;
 }
 
