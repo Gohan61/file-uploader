@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import DeleteFile from "./DeleteFile";
 import UpdateFile from "./UpdateFile";
 import { useState } from "react";
+import GetFile from "./GetFile";
 
 export default function File() {
   const {
@@ -25,7 +26,7 @@ export default function File() {
         return (
           <div key={file.id}>
             <h3>{file.title}</h3>
-            <button>Download file</button>
+            <GetFile fileId={file.id} fileTitle={file.title}></GetFile>
             <button onClick={() => setShowFileDetails(!showFileDetails)}>
               {showFileDetails ? "Hide" : "Show details"}
             </button>
