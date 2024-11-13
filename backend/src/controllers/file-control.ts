@@ -1,10 +1,12 @@
 import asyncHandler from "express-async-handler";
 import { body, validationResult } from "express-validator";
-import express, { Request, Response } from "express";
+import express, { Request, response, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { User } from "@prisma/client";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
 import { handleUpload } from "../config/upload";
+const { Readable } = require("stream");
+import { pipeline } from "node:stream/promises";
 
 const prisma = new PrismaClient();
 
@@ -40,7 +42,7 @@ export const newFile = [
             createdAt: createdAt,
             size: sizeInMB,
             uploadTime: uploadTimeSeconds,
-            link: cldRes.secure_url,
+            link: cldRes.url,
           },
         });
 
@@ -91,8 +93,26 @@ export const getFile = asyncHandler(async (req, res, next): Promise<any> => {
 
   if (!file) {
     return res.status(404).json({ error: "File not found" });
-  } else {
-    return res.status(200).json({ file: file });
+  }
+
+  try {
+    const cloudinaryFile = await fetch(`${file.link}`);
+
+    if (!cloudinaryFile.ok) {
+      return res
+        .status(500)
+        .json({ errors: `Failed to fetch file: ${cloudinaryFile.statusText}` });
+    }
+
+    res.setHeader(
+      "Content-Type",
+      cloudinaryFile.headers.get("content-type") || "application/octet-stream"
+    );
+
+    res.setHeader("Content-Disposition", `attachment; filename=${file.title}`);
+    await pipeline(Readable.from(cloudinaryFile.body), res);
+  } catch (err) {
+    return res.status(500).json({ errors: err });
   }
 });
 
