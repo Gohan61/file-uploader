@@ -10,17 +10,6 @@ export default function GetFile({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  //   const handleDownload = () => {
-  //     const downloadUrl = `http://localhost:3000/files/${fileId}`;
-  //     const link = document.createElement("a");
-  //     link.href = downloadUrl;
-  //     link.download = "";
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     document.body.removeChild(link);
-  //   };
-
-  //   return <button onClick={handleDownload}>Download file</button>;
   function handleDownload() {
     setIsLoading(true);
     setError("");
