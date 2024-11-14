@@ -6,6 +6,9 @@
   ],
   "compilerOptions": {
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "types": ["vitest/globals", "vitest/jsdom", "@testing-library/jest-dom"]
   }
 }
