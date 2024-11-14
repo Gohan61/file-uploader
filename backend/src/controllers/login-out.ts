@@ -24,7 +24,7 @@ export const signup = [
     .trim()
     .isLength({ min: 1 })
     .isLength({ max: 32 })
-    .withMessage("Password can be maxium 32 characters"),
+    .withMessage("Password can be maximum 32 characters"),
 
   asyncHandler(async (req, res, next): Promise<any> => {
     const errors = validationResult(req);
@@ -99,8 +99,6 @@ export const signin = [
 ];
 
 export const logout = asyncHandler(async (req, res, next): Promise<any> => {
-  console.log(req);
-
   const sessionId: string | undefined = req.sessionID;
 
   try {
