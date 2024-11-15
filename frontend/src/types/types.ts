@@ -22,6 +22,10 @@ export interface fileType {
   folderId: number;
 }
 
+export interface File {
+  file: fileType;
+}
+
 export interface fileData {
   data: fileType[];
 }
