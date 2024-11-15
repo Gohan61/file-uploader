@@ -94,7 +94,11 @@ export default function Signup() {
           }
           required
         />
-        {error.username ? <p>{error.username}</p> : ""}
+        {error.username ? (
+          <p data-testid="usernameError">{error.username}</p>
+        ) : (
+          ""
+        )}
         {error.duplicate ? <p>{error.duplicate}</p> : ""}
         <label htmlFor="name">Name</label>
         <input
@@ -106,7 +110,7 @@ export default function Signup() {
             setSignupForm({ ...signupForm, name: e.target.value })
           }
         />
-        {error.name ? <p>{error.name}</p> : ""}
+        {error.name ? <p data-testid="nameError">{error.name}</p> : ""}
         <label htmlFor="password">Password (required)</label>
         <input
           type="password"
@@ -117,7 +121,11 @@ export default function Signup() {
             setSignupForm({ ...signupForm, password: e.target.value })
           }
         />
-        {error.password ? <p>{error.password}</p> : ""}
+        {error.password ? (
+          <p data-testid="passwordError">{error.password}</p>
+        ) : (
+          ""
+        )}
         <button onClick={(e) => handleSignup(e)}>Submit</button>
       </form>
     </div>

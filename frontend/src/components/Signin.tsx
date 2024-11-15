@@ -90,7 +90,7 @@ export default function Signin() {
           }}
           onBlur={() => focusValidation("username")}
         />
-        <p>{inputValidation.username}</p>
+        <p data-testid="usernameError">{inputValidation.username}</p>
         <label htmlFor="password">Password</label>
         <input
           type="password"
@@ -104,9 +104,9 @@ export default function Signin() {
           }}
           onBlur={() => focusValidation("password")}
         />
-        {<p>{inputValidation.password}</p>}
+        {<p data-testid="passwordError">{inputValidation.password}</p>}
         {error.password ? <p>{error.password}</p> : ""}
-        {error.user ? <p>{error.user}</p> : ""}
+        {error.user ? <p data-testid="userError">{error.user}</p> : ""}
         <button
           onClick={(e) => {
             handleSignin(e);
