@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Download from "../assets/download.svg";
 
 export default function GetFile({
   fileId,
@@ -37,7 +38,7 @@ export default function GetFile({
   return (
     <>
       <button onClick={handleDownload} disabled={isLoading}>
-        {isLoading ? "Downloading" : "Download file"}
+        {isLoading ? "Downloading" : <img src={Download}></img>}
       </button>
       {error ? <p>{error}</p> : ""}
     </>

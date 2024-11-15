@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { GetFolder } from "../types/types";
+import Delete from "../assets/delete.svg";
 
 export default function DeleteFile({
   getFolder,
@@ -57,7 +58,9 @@ export default function DeleteFile({
 
   return (
     <>
-      <button onClick={openDialog}>Delete file</button>
+      <button onClick={openDialog}>
+        <img src={Delete}></img>
+      </button>
       <dialog ref={dialogRef}>
         <button onClick={(e) => deleteFile(e, fileId)}>
           Yes, delete file {fileTitle}
