@@ -95,7 +95,9 @@ export default function UpdateFile({
 
   return (
     <>
-      <button onClick={openDialog}>···</button>
+      <button onClick={openDialog} className="mb-auto mr-5">
+        ···
+      </button>
       <dialog ref={dialogRef}>
         <h2>Update folder name and/or current folder</h2>
         <form method="put">

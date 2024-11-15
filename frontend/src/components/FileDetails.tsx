@@ -5,8 +5,8 @@ export default function FileDetails({ file }: File) {
   const [showFileDetails, setShowFileDetails] = useState(false);
 
   return (
-    <div key={file.id}>
-      <h3>{file.title}</h3>
+    <div key={file.id} className="mb-2">
+      <h3 className="mb-1">{file.title}</h3>
       <button onClick={() => setShowFileDetails(!showFileDetails)}>
         {showFileDetails ? "Hide" : "Show details"}
       </button>

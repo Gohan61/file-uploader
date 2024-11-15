@@ -28,20 +28,24 @@ export default function File() {
       {contextFiles.data.map((file) => {
         return (
           <div className="">
-            <FileDetails file={file}></FileDetails>
-            <GetFile fileId={file.id} fileTitle={file.title}></GetFile>
-            <UpdateFile
-              getFolder={getFolder}
-              currentFolder={currentFolder}
-              fileId={file.id}
-              currentFilename={file.title}
-            ></UpdateFile>
-            <DeleteFile
-              getFolder={getFolder}
-              currentFolder={currentFolder}
-              fileId={file.id}
-              fileTitle={file.title}
-            ></DeleteFile>
+            <div className="flex flex-column justify-between">
+              <FileDetails file={file}></FileDetails>
+              <UpdateFile
+                getFolder={getFolder}
+                currentFolder={currentFolder}
+                fileId={file.id}
+                currentFilename={file.title}
+              ></UpdateFile>
+            </div>
+            <div className="flex justify-around">
+              <GetFile fileId={file.id} fileTitle={file.title}></GetFile>
+              <DeleteFile
+                getFolder={getFolder}
+                currentFolder={currentFolder}
+                fileId={file.id}
+                fileTitle={file.title}
+              ></DeleteFile>
+            </div>
           </div>
         );
       })}
