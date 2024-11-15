@@ -79,13 +79,10 @@ export default function Navbar({
       </h1>
       {props.loginStatus ? (
         <nav>
-          <ul>
-            <li>
-              <Link to={"/home"}>Home</Link>
-            </li>
+          <ul className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
             {props.folders.folders.map((folder: folderType) => {
               return (
-                <li key={folder.id}>
+                <li key={folder.id} className="p-[10px]">
                   <button
                     onClick={(e) => {
                       props.getFolder(e, folder.title);

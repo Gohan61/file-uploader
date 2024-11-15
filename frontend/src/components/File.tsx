@@ -21,10 +21,14 @@ export default function File() {
 
   return (
     <>
-      {contextFiles.data.length === 0 ? <p>No files</p> : ""}
+      {contextFiles.data.length === 0 ? (
+        <p className="md:col-start-1 md:col-end-3 md:row-span-2 ">No files</p>
+      ) : (
+        ""
+      )}
       {contextFiles.data.map((file) => {
         return (
-          <div key={file.id}>
+          <div key={file.id} className="">
             <h3>{file.title}</h3>
             <GetFile fileId={file.id} fileTitle={file.title}></GetFile>
             <button onClick={() => setShowFileDetails(!showFileDetails)}>

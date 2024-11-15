@@ -80,7 +80,7 @@ export default function Upload() {
   }
 
   return (
-    <div>
+    <div className="flex flex-row w-fit">
       <form action="" method="POST" encType="multipart/form-data">
         <label htmlFor="file">Click to pick a new file</label>
         <input
