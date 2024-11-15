@@ -1,26 +1,12 @@
 import Navbar from "../src/components/Navbar";
-import {
-  describe,
-  expect,
-  it,
-  vi,
-  vitest,
-  beforeEach,
-  afterEach,
-  beforeAll,
-  afterAll,
-} from "vitest";
+import { describe, expect, it, vi, beforeAll } from "vitest";
 import userEvent from "@testing-library/user-event";
-import fireEvent from "@testing-library/react";
 import { render, screen } from "@testing-library/react";
-import { act } from "react";
 import React from "react";
 import "@testing-library/jest-dom";
 
 vi.mock("react-router-dom", () => {
   const originalModule = vi.importActual("react-router-dom");
-  const loginStatus = false;
-  const setLoginStatus = () => {};
 
   return {
     _esModule: true,
@@ -29,16 +15,6 @@ vi.mock("react-router-dom", () => {
     Link: "a",
   };
 });
-
-// beforeEach(() => {
-//   vitest.spyOn(global, "fetch").mockResolvedValue({
-//     json: vi.fn().mockResolvedValue(mockResponse),
-//   });
-// });
-
-// afterEach(() => {
-//   vi.restoreAllMocks();
-// });
 
 // No support for dialog in js-dom
 beforeAll(() => {
