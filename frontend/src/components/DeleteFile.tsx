@@ -5,10 +5,12 @@ export default function DeleteFile({
   getFolder,
   currentFolder,
   fileId,
+  fileTitle,
 }: {
   getFolder: GetFolder;
   currentFolder: string;
   fileId: number;
+  fileTitle: string;
 }) {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const openDialog = () => {
@@ -57,7 +59,9 @@ export default function DeleteFile({
     <>
       <button onClick={openDialog}>Delete file</button>
       <dialog ref={dialogRef}>
-        <button onClick={(e) => deleteFile(e, fileId)}>Yes, delete file</button>
+        <button onClick={(e) => deleteFile(e, fileId)}>
+          Yes, delete file {fileTitle}
+        </button>
         <button onClick={closeDialog}>Close</button>
       </dialog>
       {error ? <p>{error}</p> : ""}

@@ -66,6 +66,7 @@ export default function File() {
               getFolder={getFolder}
               currentFolder={currentFolder}
               fileId={file.id}
+              fileTitle={file.title}
             ></DeleteFile>
           </div>
         );
