@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useEffect, useState, useRef } from "react";
 import { fileData, fileType, folderData } from "../types/types";
+import cloud from "../assets/cloud-storage.png";
+import { Link } from "react-router-dom";
 
 export default function App() {
   const [loginStatus, setLoginStatus] = useState(false);
@@ -86,6 +88,16 @@ export default function App() {
   }
   return (
     <>
+      <div className="shadow-sm bg-sky-900 flex p-2 items-center justify-center sticky top-0 z-20">
+        <img
+          src={cloud}
+          alt="Cloud representing cloud storage"
+          className="w-16 object-contain"
+        />
+        <h1 className="text-3xl text-center  font-black text-white font-mono">
+          <Link to={"/home"}>The Closed Box</Link>
+        </h1>
+      </div>
       <Navbar
         props={{
           loginStatus,
