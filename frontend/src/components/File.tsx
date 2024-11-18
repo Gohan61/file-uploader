@@ -21,7 +21,7 @@ export default function File() {
   return (
     <>
       {contextFiles.data.length === 0 ? (
-        <p className="md:col-start-1 md:col-end-3 md:row-span-2 ">No files</p>
+        <p className="text-lg font-bold text-center mt-2">No files</p>
       ) : (
         ""
       )}
