@@ -49,19 +49,36 @@ export default function Folder({ getFolders }: { getFolders: Folders }) {
 
   return (
     <>
-      <button onClick={() => setShowForm(true)}>New folder</button>
+      <button
+        onClick={() => setShowForm(true)}
+        className="px-2 border-2 rounded-md h-fit bg-sky-800 text-white"
+      >
+        New folder
+      </button>
       {showForm ? (
-        <div>
-          <form action="" method="post">
-            <label htmlFor="folderName">Folder name: </label>
+        <div className="z-1 absolute -mt-12 rounded-md ml-auto mr-auto left-0 right-0 bg-slate-400 p-3 grid grid-columns-1 grid-rows-1 md:w-[500px] justify-center items-end">
+          <form
+            action=""
+            method="post"
+            className="column-start-1 row-start-1 flex flex-column flex-wrap"
+          >
+            <label htmlFor="folderName" className="mr-2">
+              Folder name:{" "}
+            </label>
             <input
               type="text"
               name="folderName"
               id="folderName"
               value={folderName}
               onChange={(e) => setFolderName(e.target.value)}
+              className="rounded-md"
             />
-            <button onClick={(e) => newFolder(e, folderName)}>Submit</button>
+            <button
+              onClick={(e) => newFolder(e, folderName)}
+              className="rounded-md bg-slate-600 text-white px-2"
+            >
+              Submit
+            </button>
           </form>
           <button
             onClick={() => {
@@ -69,6 +86,7 @@ export default function Folder({ getFolders }: { getFolders: Folders }) {
               setError("");
               setFolderName("");
             }}
+            className="column-start-1 row-start-1 rounded-md bg-slate-600 text-white px-2"
           >
             Cancel
           </button>
