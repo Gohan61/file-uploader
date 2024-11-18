@@ -74,19 +74,20 @@ export default function Navbar({
 
   return (
     <>
-      <h1>
-        <Link to={"/home"}>The Closed Box</Link>
-      </h1>
       {props.loginStatus ? (
-        <nav>
-          <ul className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
+        <nav className="text-lg bg-slate-50">
+          <ul className="bg-sky-50 border-b-2 border-gray-950 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))]">
             {props.folders.folders.map((folder: folderType) => {
               return (
-                <li key={folder.id} className="p-[10px]">
+                <li
+                  key={folder.id}
+                  className="p-[10px] grid grid-rows-2 grid-columns-2"
+                >
                   <button
                     onClick={(e) => {
                       props.getFolder(e, folder.title);
                     }}
+                    className="col-start-1 col-end-3 border-b-2 border-cyan-900 mb-2"
                   >
                     {folder.title}
                   </button>
@@ -94,23 +95,30 @@ export default function Navbar({
                     ""
                   ) : (
                     <>
-                      <DeleteFolder
-                        folderTitle={folder.title}
-                        getFolders={props.getFolders}
-                      ></DeleteFolder>
                       <UpdateFolder
                         folderTitle={folder.title}
                         getFolders={props.getFolders}
                         folderId={folder.id}
                       ></UpdateFolder>
+                      <DeleteFolder
+                        folderTitle={folder.title}
+                        getFolders={props.getFolders}
+                      ></DeleteFolder>
                     </>
                   )}
                 </li>
               );
             })}
           </ul>
-          <Folder getFolders={props.getFolders}></Folder>
-          <button onClick={(e) => logout(e)}>Logout</button>
+          <div className="flex h-10 items-center p-2">
+            <Folder getFolders={props.getFolders}></Folder>
+            <button
+              onClick={(e) => logout(e)}
+              className="px-2 border-2 rounded-md h-fit ml-auto bg-sky-800 text-white"
+            >
+              Logout
+            </button>
+          </div>
           {error ? <p>{error}</p> : ""}
           {props.error ? <p>{props.error}</p> : ""}
         </nav>
