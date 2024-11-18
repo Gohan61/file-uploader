@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Folders } from "../types/types";
+import DeleteIcon from "../assets/delete.svg";
 
 export default function DeleteFolder({
   folderTitle,
@@ -55,7 +56,9 @@ export default function DeleteFolder({
 
   return (
     <>
-      <button onClick={openDialog}>Delete folder</button>
+      <button onClick={openDialog} className="ml-6 col-start-2 col-end-3">
+        <img src={DeleteIcon} alt="Trash can icon" />
+      </button>
       <dialog ref={dialogRef}>
         <p>Are you sure you want to delete this folder?</p>
         <button onClick={(e) => deleteFolder(e, folderTitle)}>
