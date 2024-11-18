@@ -58,7 +58,7 @@ export default function DeleteFile({
 
   return (
     <>
-      <button onClick={openDialog}>
+      <button onClick={openDialog} className="ml-5">
         <img src={Delete}></img>
       </button>
       <dialog ref={dialogRef}>

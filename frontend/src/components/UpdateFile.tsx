@@ -95,7 +95,7 @@ export default function UpdateFile({
 
   return (
     <>
-      <button onClick={openDialog} className="mb-auto mr-5">
+      <button onClick={openDialog} className="mb-auto ml-auto">
         ···
       </button>
       <dialog ref={dialogRef}>

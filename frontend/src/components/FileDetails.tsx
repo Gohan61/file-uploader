@@ -6,27 +6,30 @@ export default function FileDetails({ file }: File) {
 
   return (
     <div key={file.id} className="mb-2">
-      <h3 className="mb-1">{file.title}</h3>
-      <button onClick={() => setShowFileDetails(!showFileDetails)}>
+      <h3 className="mb-1 font-bold text-lg">{file.title}</h3>
+      <button
+        onClick={() => setShowFileDetails(!showFileDetails)}
+        className="italic"
+      >
         {showFileDetails ? "Hide" : "Show details"}
       </button>
       {showFileDetails ? (
         <>
-          <p>
-            <span>Created at: </span>
+          <p className="text-sm">
+            <span className="font-semibold">Created at: </span>
             {file.createdAt}
           </p>
-          <p>
-            <span>Size: </span>
+          <p className="text-sm">
+            <span className="font-semibold">Size: </span>
             {file.size}
           </p>
-          <p>
-            <span>Upload time: </span>
+          <p className="text-sm">
+            <span className="font-semibold">Upload time: </span>
             {file.uploadTime} seconds
           </p>
           {file.updatedAt ? (
-            <p>
-              <span>Updated at: </span>
+            <p className="text-sm">
+              <span className="font-semibold">Updated at: </span>
               {file.updatedAt}
             </p>
           ) : (

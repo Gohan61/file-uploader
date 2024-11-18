@@ -27,8 +27,11 @@ export default function File() {
       )}
       {contextFiles.data.map((file) => {
         return (
-          <div className="">
-            <div className="flex flex-column justify-between">
+          <div
+            className="p-3 border rounded-lg border-s-indigo-500 m-2 hover:border-2 hover:shadow-md"
+            key={file.id + "div"}
+          >
+            <div className="flex flex-column">
               <FileDetails file={file}></FileDetails>
               <UpdateFile
                 getFolder={getFolder}
@@ -37,7 +40,7 @@ export default function File() {
                 currentFilename={file.title}
               ></UpdateFile>
             </div>
-            <div className="flex justify-around">
+            <div className="flex justify-end">
               <GetFile fileId={file.id} fileTitle={file.title}></GetFile>
               <DeleteFile
                 getFolder={getFolder}
