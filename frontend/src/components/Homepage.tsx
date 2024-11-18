@@ -7,22 +7,23 @@ export default function HomePage() {
   const { loginStatus }: { loginStatus: boolean } = useOutletContext();
 
   return (
-    <div className="md:grid md:grid-cols-2 md:grid-rows-2 sm:flex sm:flex-row">
-      <img
-        src={cloud}
-        alt="Cloud representing cloud storage"
-        className="w-32 lg:w-48 object-contain"
-      />
+    <>
       {loginStatus ? (
         <>
           <Upload></Upload>
-          <div className="col-start-1 col-end-3 row-span-2 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
+          <div className="col-start-1 col-end-3 row-span-2 grid grid-cols-[repeat(auto-fit,minmax(150px,350px))]">
             <File></File>
           </div>
         </>
       ) : (
-        ""
+        <div>
+          <img
+            src={cloud}
+            alt="Cloud representing cloud storage"
+            className="w-32 lg:w-48 object-contain"
+          />
+        </div>
       )}
-    </div>
+    </>
   );
 }
