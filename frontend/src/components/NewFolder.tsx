@@ -90,11 +90,11 @@ export default function Folder({ getFolders }: { getFolders: Folders }) {
           >
             Cancel
           </button>
+          {error ? <p>{error}</p> : ""}
         </div>
       ) : (
         ""
       )}
-      {error ? <p>{error}</p> : ""}
     </>
   );
 }
