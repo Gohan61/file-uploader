@@ -21,6 +21,7 @@ export default function UpdateFolder({
   const closeDialog = () => {
     if (dialogRef.current) {
       dialogRef.current.close();
+      setError("");
     }
   };
 
@@ -32,7 +33,6 @@ export default function UpdateFolder({
   ) {
     let respStatus: number;
     e.preventDefault();
-    closeDialog();
 
     fetch(`http://localhost:3000/folders/${title}`, {
       mode: "cors",
@@ -52,6 +52,7 @@ export default function UpdateFolder({
       })
       .then((res) => {
         if (respStatus === 200) {
+          closeDialog();
           getFolders();
           setNewFolderName("");
           setError("");
@@ -66,18 +67,33 @@ export default function UpdateFolder({
 
   return (
     <>
-      <button onClick={openDialog}>···</button>
-      <dialog ref={dialogRef}>
-        <form action="" method="PUT">
+      <button
+        onClick={openDialog}
+        className="ml-auto row-span-2 col-start-1 col-end-2"
+      >
+        ···
+      </button>
+      <dialog
+        ref={dialogRef}
+        // className="rounded-md ml-auto mr-auto left-0 right-0 top-50 bg-slate-400 p-3 grid grid-columns-1 grid-rows-1 md:w-[450px] justify-center items-end"
+        className="rounded-md ml-auto mr-auto left-0 right-0 bg-slate-400 p-3"
+      >
+        <form
+          action=""
+          method="PUT"
+          className="column-start-1 row-start-1 flex flex-column flex-wrap"
+        >
           <label htmlFor="newFolderName">New folder name: </label>
           <input
             type="text"
             name="newFolderName"
             id="newFolderName"
+            className="mr-2"
             value={newFolderName}
             onChange={(e) => setNewFolderName(e.target.value)}
           />
           <button
+            className="rounded-md bg-slate-600 text-white px-2 mt-2"
             onClick={(e) =>
               updateFolder(e, folderTitle, folderId, newFolderName)
             }
@@ -85,8 +101,14 @@ export default function UpdateFolder({
             Submit
           </button>
         </form>
+        <button
+          className="column-start-1 row-start-1 rounded-md bg-slate-600 text-white px-2"
+          onClick={closeDialog}
+        >
+          Cancel
+        </button>
+        {error ? <p>{error}</p> : ""}
       </dialog>
-      {error ? <p>{error}</p> : ""}
     </>
   );
 }
