@@ -98,15 +98,21 @@ export default function UpdateFile({
       <button onClick={openDialog} className="mb-auto ml-auto">
         ···
       </button>
-      <dialog ref={dialogRef}>
+      <dialog
+        ref={dialogRef}
+        className="rounded-md ml-auto mr-auto left-0 right-0 bg-slate-400 p-3 sm:w-full md:w-[500px]"
+      >
         <h2>Update folder name and/or current folder</h2>
-        <form method="put">
-          <label htmlFor="fileName">File name: </label>
+        <form method="put" className="flex flex-column flex-wrap mt-2">
+          <label htmlFor="fileName" className="mr-2">
+            File name:{" "}
+          </label>
           <input
             type="text"
             name="fileName"
             id="fileName"
             value={fileName}
+            className="rounded-md"
             onChange={(e) => setFileName(e.target.value)}
           />
           <select
@@ -114,6 +120,7 @@ export default function UpdateFile({
             id="folder"
             value={folder}
             onChange={(e) => setFolder(e.target.value)}
+            className="rounded-md mt-2 h-fit md:ml-2"
           >
             {folderList.folders.map((item: folderType) => {
               return (
@@ -123,18 +130,22 @@ export default function UpdateFile({
               );
             })}
           </select>
-          <button onClick={(e) => updateFile(e, fileId, folder, fileName)}>
+          <button
+            onClick={(e) => updateFile(e, fileId, folder, fileName)}
+            className="rounded-md bg-slate-600 text-white px-2 mt-14 h-fit -mr-14 md:mr-0 md:mt-6"
+          >
             Submit
           </button>
+          <button
+            onClick={() => {
+              closeDialog();
+              setFileName(currentFilename);
+            }}
+            className="rounded-md bg-slate-600 text-white px-2 mt-14 h-fit ml-auto md:mr-0 md:mt-6"
+          >
+            Close
+          </button>
         </form>
-        <button
-          onClick={() => {
-            closeDialog();
-            setFileName(currentFilename);
-          }}
-        >
-          Close
-        </button>
       </dialog>
       {error ? <p>{error.folder}</p> : ""}
       {error ? <p>{error.title}</p> : ""}

@@ -61,13 +61,26 @@ export default function DeleteFile({
       <button onClick={openDialog} className="ml-5">
         <img src={Delete}></img>
       </button>
-      <dialog ref={dialogRef}>
-        <button onClick={(e) => deleteFile(e, fileId)}>
-          Yes, delete file {fileTitle}
-        </button>
-        <button onClick={closeDialog}>Close</button>
+      <dialog
+        ref={dialogRef}
+        className="rounded-md ml-auto mr-auto left-0 right-0 bg-slate-400 p-3 md:w-[500px]"
+      >
+        <div className="flex">
+          <button
+            onClick={(e) => deleteFile(e, fileId)}
+            className="rounded-md bg-slate-600 text-white px-2 h-fit"
+          >
+            Yes, delete file {fileTitle}
+          </button>
+          <button
+            onClick={closeDialog}
+            className="rounded-md bg-slate-600 text-white px-2 h-fit md:ml-auto ml-8"
+          >
+            Close
+          </button>
+        </div>
+        {error ? <p>{error}</p> : ""}
       </dialog>
-      {error ? <p>{error}</p> : ""}
     </>
   );
 }

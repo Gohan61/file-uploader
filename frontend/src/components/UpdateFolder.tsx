@@ -75,14 +75,9 @@ export default function UpdateFolder({
       </button>
       <dialog
         ref={dialogRef}
-        // className="rounded-md ml-auto mr-auto left-0 right-0 top-50 bg-slate-400 p-3 grid grid-columns-1 grid-rows-1 md:w-[450px] justify-center items-end"
-        className="rounded-md ml-auto mr-auto left-0 right-0 bg-slate-400 p-3"
+        className="rounded-md ml-auto mr-auto left-0 right-0 bg-slate-400 p-3 md:w-[500px]"
       >
-        <form
-          action=""
-          method="PUT"
-          className="column-start-1 row-start-1 flex flex-column flex-wrap"
-        >
+        <form action="" method="PUT" className="flex flex-column flex-wrap">
           <label htmlFor="newFolderName">New folder name: </label>
           <input
             type="text"
@@ -100,13 +95,14 @@ export default function UpdateFolder({
           >
             Submit
           </button>
+          <button
+            className="rounded-md bg-slate-600 text-white px-2 mt-2 ml-auto"
+            onClick={closeDialog}
+          >
+            Cancel
+          </button>
         </form>
-        <button
-          className="column-start-1 row-start-1 rounded-md bg-slate-600 text-white px-2"
-          onClick={closeDialog}
-        >
-          Cancel
-        </button>
+
         {error ? <p>{error}</p> : ""}
       </dialog>
     </>

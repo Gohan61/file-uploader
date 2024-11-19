@@ -59,12 +59,25 @@ export default function DeleteFolder({
       <button onClick={openDialog} className="ml-6 col-start-2 col-end-3">
         <img src={DeleteIcon} alt="Trash can icon" />
       </button>
-      <dialog ref={dialogRef}>
+      <dialog
+        ref={dialogRef}
+        className="rounded-md ml-auto mr-auto left-0 right-0 bg-slate-400 p-3"
+      >
         <p>Are you sure you want to delete this folder?</p>
-        <button onClick={(e) => deleteFolder(e, folderTitle)}>
-          Yes, delete folder
-        </button>
-        <button onClick={closeDialog}>Close</button>
+        <div className="w-full flex">
+          <button
+            onClick={(e) => deleteFolder(e, folderTitle)}
+            className="rounded-md bg-slate-600 text-white px-2 mt-2"
+          >
+            Yes, delete folder
+          </button>
+          <button
+            onClick={closeDialog}
+            className="rounded-md bg-slate-600 text-white px-2 mt-2 ml-auto"
+          >
+            Close
+          </button>
+        </div>
       </dialog>
 
       {error ? <p>{error}</p> : ""}
