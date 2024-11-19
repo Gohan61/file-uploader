@@ -79,11 +79,17 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      <h2>Sign up</h2>
-
-      <form action="" method="POST" encType="multipart/form-data">
-        <label htmlFor="username">Username (required)</label>
+    <div className="flex flex-column flex-wrap justify-center w-full">
+      <h2 className="text-2xl mb-3 w-full text-center">Sign up</h2>
+      <form
+        action=""
+        method="POST"
+        encType="multipart/form-data"
+        className="flex gap-1 flex-column flex-wrap w-[300px]"
+      >
+        <label htmlFor="username" className="font-bold text-lg">
+          Username (required)
+        </label>
         <input
           type="text"
           name="username"
@@ -93,14 +99,19 @@ export default function Signup() {
             setSignupForm({ ...signupForm, username: e.target.value })
           }
           required
+          className="rounded-md border-sky-950 shadow-sm border-2"
         />
         {error.username ? (
-          <p data-testid="usernameError">{error.username}</p>
+          <p data-testid="usernameError" className="text-red-500 bold w-full">
+            {error.username}
+          </p>
         ) : (
           ""
         )}
         {error.duplicate ? <p>{error.duplicate}</p> : ""}
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name" className="font-bold text-lg">
+          Name
+        </label>
         <input
           type="text"
           name="name"
@@ -109,9 +120,12 @@ export default function Signup() {
           onChange={(e) =>
             setSignupForm({ ...signupForm, name: e.target.value })
           }
+          className="rounded-md border-sky-950 shadow-sm border-2"
         />
         {error.name ? <p data-testid="nameError">{error.name}</p> : ""}
-        <label htmlFor="password">Password (required)</label>
+        <label htmlFor="password" className="font-bold text-lg">
+          Password (required)
+        </label>
         <input
           type="password"
           name="password"
@@ -120,13 +134,21 @@ export default function Signup() {
           onChange={(e) =>
             setSignupForm({ ...signupForm, password: e.target.value })
           }
+          className="rounded-md border-sky-950 shadow-sm border-2"
         />
         {error.password ? (
-          <p data-testid="passwordError">{error.password}</p>
+          <p data-testid="passwordError" className="text-red-500 bold w-full">
+            {error.password}
+          </p>
         ) : (
           ""
         )}
-        <button onClick={(e) => handleSignup(e)}>Submit</button>
+        <button
+          onClick={(e) => handleSignup(e)}
+          className="mt-2 px-2 border-2 rounded-md h-fit bg-sky-800 text-white"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );

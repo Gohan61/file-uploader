@@ -123,10 +123,14 @@ export default function Navbar({
           {props.error ? <p>{props.error}</p> : ""}
         </nav>
       ) : (
-        <>
-          <Link to={"/signup"}>Sign up</Link>
-          <Link to={"/signin"}>Sign in</Link>
-        </>
+        <div className="flex justify-around bg-slate-700 md:justify-center md:gap-16">
+          <Link to={"/signup"} className="text-white font-bold">
+            Sign up
+          </Link>
+          <Link to={"/signin"} className="text-white font-bold">
+            Sign in
+          </Link>
+        </div>
       )}
     </>
   );

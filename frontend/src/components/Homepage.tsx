@@ -1,5 +1,4 @@
 import { useOutletContext } from "react-router-dom";
-import cloud from "../assets/cloud-storage.png";
 import Upload from "./Upload";
 import File from "./File";
 
@@ -16,12 +15,23 @@ export default function HomePage() {
           </div>
         </>
       ) : (
-        <div>
-          <img
-            src={cloud}
-            alt="Cloud representing cloud storage"
-            className="w-32 lg:w-48 object-contain"
-          />
+        <div className="flex flex-column flex-wrap justify-center mt-3">
+          <h1 className="text-2xl font-extrabold mb-5 w-full text-center">
+            Welcome to The Closed Box
+          </h1>
+          <div className="flex flex-column flex-wrap justify-center md:flex-row">
+            <p className="md:w-[300px] w-[250px]">
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Unde
+              assumenda quam praesentium aspernatur obcaecati quo quod iure
+              animi! Reiciendis adipisci cum expedita porro dignissimos vel!
+              Repudiandae qui perspiciatis accusamus libero.
+            </p>
+            <p className="md:w-[300px] w-[250px] mt-3 md:mt-0">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque
+              sit ad obcaecati? Distinctio eaque impedit quo sit rem, a optio
+              debitis placeat culpa aut laborum, esse ad, nihil sapiente neque!
+            </p>
+          </div>
         </div>
       )}
     </>

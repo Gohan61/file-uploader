@@ -73,11 +73,17 @@ export default function Signin() {
   }
 
   return (
-    <div>
-      <h2>Sign in</h2>
-
-      <form action="" method="POST" encType="multipart/form-data">
-        <label htmlFor="username">Username</label>
+    <div className="flex flex-column flex-wrap justify-center w-full">
+      <h2 className="text-2xl mb-3 w-full text-center">Sign in</h2>
+      <form
+        action=""
+        method="POST"
+        encType="multipart/form-data"
+        className="flex gap-1 flex-column flex-wrap w-[300px]"
+      >
+        <label htmlFor="username" className="font-bold text-lg">
+          Username
+        </label>
         <input
           type="text"
           name="username"
@@ -89,9 +95,14 @@ export default function Signin() {
             setValidation({ ...inputValidation, username: "" });
           }}
           onBlur={() => focusValidation("username")}
+          className="rounded-md border-sky-950 shadow-sm border-2"
         />
-        <p data-testid="usernameError">{inputValidation.username}</p>
-        <label htmlFor="password">Password</label>
+        <p data-testid="usernameError" className="text-red-500 bold">
+          {inputValidation.username}
+        </p>
+        <label htmlFor="password" className="font-bold text-lg">
+          Password
+        </label>
         <input
           type="password"
           name="password"
@@ -103,14 +114,20 @@ export default function Signin() {
             setValidation({ ...inputValidation, password: "" });
           }}
           onBlur={() => focusValidation("password")}
+          className="rounded-md border-sky-950 shadow-sm border-2"
         />
-        {<p data-testid="passwordError">{inputValidation.password}</p>}
+        {
+          <p data-testid="passwordError" className="text-red-500 bold w-full">
+            {inputValidation.password}
+          </p>
+        }
         {error.password ? <p>{error.password}</p> : ""}
         {error.user ? <p data-testid="userError">{error.user}</p> : ""}
         <button
           onClick={(e) => {
             handleSignin(e);
           }}
+          className="mt-2 px-2 border-2 rounded-md h-fit bg-sky-800 text-white"
         >
           Sign in
         </button>
