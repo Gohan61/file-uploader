@@ -39,49 +39,49 @@ export default function HomePage() {
                 "https://res.cloudinary.com/du5var2so/image/upload/v1732027032/File-uploader-homepage-images/qz6wni15qtr5hk9rb1r8.png"
               }
               alt="Roll of film"
-              className="w-[30px] md:w-[50px] object-contain absolute top-[60px] lg:top-0 left-0"
+              className="w-[30px] md:w-[50px] object-contain absolute top-[60px] lg:top-0 left-0 opacity-50"
             />
             <img
               src={
                 "https://res.cloudinary.com/du5var2so/image/upload/v1732027031/File-uploader-homepage-images/ukz3pkq9allcnvjmzsmk.png"
               }
               alt="Roll of film"
-              className="w-[30px] md:w-[50px] object-contain absolute bottom-0 left-0"
+              className="w-[30px] md:w-[50px] object-contain absolute bottom-0 left-0 opacity-50"
             />
             <img
               src={
                 "https://res.cloudinary.com/du5var2so/image/upload/v1732027031/File-uploader-homepage-images/nvkzvfvjggwlbgssr2yw.png"
               }
               alt="Roll of film"
-              className="w-[30px] md:w-[50px] object-contain absolute top-[30%] md:top-[7%] lg:top-0 right-0"
+              className="w-[30px] md:w-[50px] object-contain absolute top-[30%] md:top-[7%] lg:top-0 right-0 opacity-50"
             />
             <img
               src={
                 "https://res.cloudinary.com/du5var2so/image/upload/v1732027031/File-uploader-homepage-images/y4xna51knpjakgyb0h61.png"
               }
               alt="Roll of film"
-              className="w-[30px] md:w-[50px] object-contain absolute bottom-0 right-0"
+              className="w-[30px] md:w-[50px] object-contain absolute bottom-0 right-0 opacity-50"
             />
             <img
               src={
                 "https://res.cloudinary.com/du5var2so/image/upload/v1732027031/File-uploader-homepage-images/grjnbg8qtjqbbhacfolo.png"
               }
               alt="Roll of film"
-              className="w-[30px] md:w-[50px] object-contain absolute top-[55%] right-[10px] lg:right-[150px]"
+              className="w-[30px] md:w-[50px] object-contain absolute top-[55%] right-[10px] lg:right-[150px] opacity-50"
             />
             <img
               src={
                 "https://res.cloudinary.com/du5var2so/image/upload/v1732027031/File-uploader-homepage-images/evvnuaxsvhvf3u9v7t1l.png"
               }
               alt="Roll of film"
-              className="w-[30px] md:w-[50px] object-contain absolute top-[45%] left-[10px]"
+              className="w-[30px] md:w-[50px] object-contain absolute top-[45%] left-[10px] opacity-50"
             />
             <img
               src={
                 "https://res.cloudinary.com/du5var2so/image/upload/v1732027031/File-uploader-homepage-images/zwdk1ojg7tvog2flcsv7.png"
               }
               alt="Roll of film"
-              className="w-[30px] md:w-[50px] object-contain absolute top-[20%] right-[12px] md:right-[20px] md:top-[30%] lg:right-[130px]"
+              className="w-[30px] md:w-[50px] object-contain absolute top-[20%] right-[12px] md:right-[20px] md:top-[30%] lg:right-[130px] opacity-50"
             />
           </div>
         </>
