@@ -21,7 +21,7 @@ export default function UpdateFolder({
   const closeDialog = () => {
     if (dialogRef.current) {
       dialogRef.current.close();
-      setError("");
+      // setError("");
     }
   };
 
@@ -98,6 +98,7 @@ export default function UpdateFolder({
           <button
             className="rounded-md bg-slate-600 text-white px-2 mt-2 ml-auto"
             onClick={closeDialog}
+            type="button"
           >
             Cancel
           </button>

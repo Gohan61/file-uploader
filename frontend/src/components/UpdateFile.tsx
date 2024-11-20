@@ -141,6 +141,7 @@ export default function UpdateFile({
               closeDialog();
               setFileName(currentFilename);
             }}
+            type="button"
             className="rounded-md bg-slate-600 text-white px-2 mt-14 h-fit ml-auto md:mr-0 md:mt-6"
           >
             Close

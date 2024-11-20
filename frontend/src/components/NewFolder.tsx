@@ -86,6 +86,7 @@ export default function Folder({ getFolders }: { getFolders: Folders }) {
               setError("");
               setFolderName("");
             }}
+            type="button"
             className="column-start-1 row-start-1 rounded-md bg-slate-600 text-white px-2"
           >
             Cancel
