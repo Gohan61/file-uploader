@@ -13,12 +13,12 @@ export default function App() {
   const [uploadFolder, setUploadFolder] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
   const [currentFolder, setCurrentFolder] = useState<string>("main");
-  const sessionCookie = useRef<number | undefined>(
-    document.cookie.indexOf("connect.sid")
-  );
+  const sessionCookie: { current: number | undefined } = useRef<
+    number | undefined
+  >(document.cookie.indexOf("connect.sid"));
 
   useEffect(() => {
-    if (sessionCookie) {
+    if (sessionCookie.current != -1) {
       setLoginStatus(true);
       getFolders();
       getFolder(undefined, "main");
