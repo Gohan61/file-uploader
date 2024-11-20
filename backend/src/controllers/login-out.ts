@@ -108,7 +108,11 @@ export const logout = asyncHandler(async (req, res, next): Promise<any> => {
           id: sessionId,
         },
       });
-      return res.status(200).json({ message: "Logout successful" });
+
+      return res
+        .clearCookie("connect.sid")
+        .status(200)
+        .json({ message: "Logout successful" });
     } else {
       return res.status(404).json({ errors: "Something went wrong" });
     }
