@@ -121,8 +121,14 @@ export default function Signin() {
             {inputValidation.password}
           </p>
         }
-        {error.password ? <p>{error.password}</p> : ""}
-        {error.user ? <p data-testid="userError">{error.user}</p> : ""}
+        {error.password ? <p className="w-full">{error.password}</p> : ""}
+        {error.user ? (
+          <p data-testid="userError" className="w-full">
+            {error.user}
+          </p>
+        ) : (
+          ""
+        )}
         <button
           onClick={(e) => {
             handleSignin(e);
