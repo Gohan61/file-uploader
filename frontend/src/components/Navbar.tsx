@@ -63,6 +63,7 @@ export default function Navbar({
         if (respStatus === 200) {
           props.setLoginStatus(false);
           navigate("/home");
+          localStorage.removeItem("sessionPresent");
         } else {
           throw res.errors;
         }

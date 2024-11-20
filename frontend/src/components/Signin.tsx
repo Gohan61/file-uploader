@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Folders, GetFolder } from "../types/types";
 
@@ -57,7 +57,7 @@ export default function Signin() {
           getFolders();
           getFolder(undefined, "main");
           setLoginStatus(true);
-
+          localStorage.setItem("sessionPresent", "true");
           navigate("/home");
         } else {
           throw res.errors;
