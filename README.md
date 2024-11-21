@@ -1,6 +1,6 @@
 # A file uploader
 
-This project is building using a React frontend. The backend uses Express, NodeJS and PostgreSQL which is managed using Prisma ORM. Files are uploaded and served from Cloudinary for download.
+This project is build using a React frontend. The backend uses Express, NodeJS and PostgreSQL which is managed using Prisma ORM. Files are uploaded to and served from Cloudinary for download.
 
 ## The Odin Project: Lesson File Uploader
 
@@ -8,7 +8,7 @@ This project is build according to the idea of this [Odin project](https://www.t
 
 ## No live website but a video
 
-In order to not pay for hosting a video is provided on YouTube which demonstrates the app functionality for those that don't wont to clone and run the project on their pc.
+In order to not pay for hosting a video is provided on YouTube which demonstrates the app functionality for those that don't want to clone and run the project on their pc.
 
 Access the [File-uploader video](https://youtu.be/1v0z-bs4d8k)
 
