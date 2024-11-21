@@ -24,8 +24,8 @@ model User {
 }
 
 model Folder {
-  id     Int     @id @default(autoincrement())
-  title  String  @unique @default("main") @db.VarChar(255)
+  id     Int     @id @unique @default(autoincrement())
+  title  String  @default("main") @db.VarChar(255)
   files  Files[]
   User   User?   @relation(fields: [userId], references: [id])
   userId Int?
