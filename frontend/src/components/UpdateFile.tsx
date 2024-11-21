@@ -9,7 +9,7 @@ export default function UpdateFile({
   currentFilename,
 }: {
   getFolder: GetFolder;
-  currentFolder: string;
+  currentFolder: number;
   fileId: number;
   currentFilename: string;
 }) {
@@ -36,7 +36,7 @@ export default function UpdateFile({
   function updateFile(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     fileId: number,
-    folder: string,
+    folderId: number,
     newTitle: string
   ) {
     let respStatus: number;
@@ -51,7 +51,7 @@ export default function UpdateFile({
       },
       body: JSON.stringify({
         newTitle: newTitle,
-        newFolder: folder,
+        folderId: folderId,
       }),
       credentials: "include",
     })
@@ -119,12 +119,14 @@ export default function UpdateFile({
             name="folder"
             id="folder"
             value={folder}
-            onChange={(e) => setFolder(e.target.value)}
+            onChange={(e) => {
+              setFolder(e.target.value);
+            }}
             className="rounded-md mt-2 h-fit md:ml-2"
           >
             {folderList.folders.map((item: folderType) => {
               return (
-                <option key={item.id + "update"} value={item.title}>
+                <option key={item.id + "update"} value={item.id}>
                   {item.title}
                 </option>
               );

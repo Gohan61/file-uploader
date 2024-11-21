@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { fileData, folderData } from "../types/types";
 import cloud from "../assets/cloud-storage.png";
 import { Link } from "react-router-dom";
@@ -10,22 +10,27 @@ export default function App() {
   const [folders, setFolder] = useState<folderData>({ folders: [] });
   const [error, setError] = useState("");
   const [files, setFiles] = useState<fileData>({ data: [] });
-  const [uploadFolder, setUploadFolder] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
-  const [currentFolder, setCurrentFolder] = useState<string>("main");
+  const [currentFolder, setCurrentFolder] = useState<number>();
+  const [uploadFolder, setUploadFolder] = useState<number | undefined>(
+    currentFolder
+  );
 
   useEffect(() => {
     if (localStorage.getItem("sessionPresent")) {
-      setLoginStatus(true);
-      getFolders();
-      getFolder(undefined, "main");
+      (() => {
+        setLoginStatus(true);
+        getFolders().then((res) => {
+          getFolder(undefined, res[0].id);
+        });
+      })();
     }
   }, [loginStatus]);
 
-  function getFolders() {
+  async function getFolders() {
     let respStatus: number;
 
-    fetch("http://localhost:3000/folders", {
+    return fetch("http://localhost:3000/folders", {
       mode: "cors",
       method: "GET",
       headers: {
@@ -40,6 +45,7 @@ export default function App() {
       .then((res) => {
         if (respStatus === 200) {
           setFolder(res);
+          return res.folders;
         } else {
           throw res.errors;
         }
@@ -49,9 +55,9 @@ export default function App() {
       });
   }
 
-  function getFolder(
+  async function getFolder(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined,
-    folder: string
+    folder: number
   ) {
     if (e) {
       e.preventDefault();
@@ -74,7 +80,7 @@ export default function App() {
       .then((res) => {
         if (respStatus === 200) {
           setFiles({ data: res.folder[0].files });
-          setCurrentFolder(folder);
+          setCurrentFolder(res.folder[0].id);
         } else {
           throw res.errors;
         }
@@ -106,6 +112,8 @@ export default function App() {
           loading,
           getFolder,
           getFolders,
+          setCurrentFolder,
+          setUploadFolder,
         }}
       ></Navbar>
       <Outlet

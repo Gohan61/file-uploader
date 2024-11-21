@@ -8,13 +8,12 @@ import FileDetails from "./FileDetails";
 export default function File() {
   const {
     files: contextFiles,
-    setFiles,
     currentFolder,
     getFolder,
   }: {
     files: fileData;
     setFiles: React.Dispatch<React.SetStateAction<fileData>>;
-    currentFolder: string;
+    currentFolder: number;
     getFolder: GetFolder;
   } = useOutletContext();
 

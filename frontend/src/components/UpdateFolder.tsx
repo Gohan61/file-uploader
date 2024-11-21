@@ -21,7 +21,7 @@ export default function UpdateFolder({
   const closeDialog = () => {
     if (dialogRef.current) {
       dialogRef.current.close();
-      // setError("");
+      setError("");
     }
   };
 

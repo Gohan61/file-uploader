@@ -109,7 +109,7 @@ export default function Signup() {
           ""
         )}
         {error.duplicate ? <p>{error.duplicate}</p> : ""}
-        <label htmlFor="name" className="font-bold text-lg">
+        <label htmlFor="name" className="font-bold text-lg w-full">
           Name
         </label>
         <input

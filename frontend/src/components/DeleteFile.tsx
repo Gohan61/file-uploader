@@ -9,7 +9,7 @@ export default function DeleteFile({
   fileTitle,
 }: {
   getFolder: GetFolder;
-  currentFolder: string;
+  currentFolder: number;
   fileId: number;
   fileTitle: string;
 }) {

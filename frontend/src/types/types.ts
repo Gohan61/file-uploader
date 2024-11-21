@@ -32,5 +32,5 @@ export interface fileData {
 
 export type GetFolder = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined,
-  folder: string
+  folder: number
 ) => void;

@@ -25,6 +25,8 @@ export default function Navbar({
     loading: boolean;
     getFolder: GetFolder;
     getFolders: Folders;
+    setCurrentFolder: React.Dispatch<React.SetStateAction<number | undefined>>;
+    setUploadFolder: React.Dispatch<React.SetStateAction<number | undefined>>;
   };
 }) {
   const navigate = useNavigate();
@@ -86,7 +88,9 @@ export default function Navbar({
                 >
                   <button
                     onClick={(e) => {
-                      props.getFolder(e, folder.title);
+                      props.getFolder(e, folder.id);
+                      props.setCurrentFolder(folder.id);
+                      props.setUploadFolder(folder.id);
                     }}
                     className="col-start-1 col-end-3 border-b-2 border-cyan-900 mb-2"
                   >
@@ -102,7 +106,7 @@ export default function Navbar({
                         folderId={folder.id}
                       ></UpdateFolder>
                       <DeleteFolder
-                        folderTitle={folder.title}
+                        folderId={folder.id}
                         getFolders={props.getFolders}
                       ></DeleteFolder>
                     </>

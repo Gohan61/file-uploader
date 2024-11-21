@@ -3,10 +3,10 @@ import { Folders } from "../types/types";
 import DeleteIcon from "../assets/delete.svg";
 
 export default function DeleteFolder({
-  folderTitle,
+  folderId,
   getFolders,
 }: {
-  folderTitle: string;
+  folderId: number;
   getFolders: Folders;
 }) {
   const [error, setError] = useState("");
@@ -24,13 +24,13 @@ export default function DeleteFolder({
 
   function deleteFolder(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    title: string
+    folderId: number
   ) {
     let respStatus: number;
     e.preventDefault();
     closeDialog();
 
-    fetch(`http://localhost:3000/folders/${title}`, {
+    fetch(`http://localhost:3000/folders/${folderId}`, {
       mode: "cors",
       method: "DELETE",
       headers: {
@@ -66,7 +66,7 @@ export default function DeleteFolder({
         <p>Are you sure you want to delete this folder?</p>
         <div className="w-full flex">
           <button
-            onClick={(e) => deleteFolder(e, folderTitle)}
+            onClick={(e) => deleteFolder(e, folderId)}
             className="rounded-md bg-slate-600 text-white px-2 mt-2"
           >
             Yes, delete folder

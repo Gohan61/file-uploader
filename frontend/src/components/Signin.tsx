@@ -97,7 +97,7 @@ export default function Signin() {
           onBlur={() => focusValidation("username")}
           className="rounded-md border-sky-950 shadow-sm border-2"
         />
-        <p data-testid="usernameError" className="text-red-500 bold">
+        <p data-testid="usernameError" className="text-red-500 bold w-full">
           {inputValidation.username}
         </p>
         <label htmlFor="password" className="font-bold text-lg">
