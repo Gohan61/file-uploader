@@ -130,7 +130,6 @@ export const getFile = asyncHandler(async (req, res, next): Promise<any> => {
 
 export const updateFile = [
   body("newTitle", "Title cannot be empty").trim().isLength({ min: 1 }),
-  body("newFolder", "Folder name cannot be empty").trim().isLength({ min: 1 }),
 
   asyncHandler(async (req, res, next): Promise<any> => {
     const errors = validationResult(req);
@@ -140,12 +139,19 @@ export const updateFile = [
         id: fileId,
       },
     });
+    const user = req.user as User | undefined;
+    const folderId: number = Number(req.body.folderId);
+    const newTitle: string = req.body.newTitle;
+    let newFolder;
 
-    const newFolder = await prisma.folder.findUnique({
-      where: {
-        title: req.body.newFolder,
-      },
-    });
+    if (user) {
+      newFolder = await prisma.folder.findUnique({
+        where: {
+          id: folderId,
+          userId: (req.user as User).id,
+        },
+      });
+    }
 
     if (!errors.isEmpty()) {
       return res.status(500).json({ errors: errors.array() });
@@ -157,8 +163,8 @@ export const updateFile = [
           id: fileId,
         },
         data: {
-          title: req.body.newTitle,
           folderId: newFolder.id,
+          title: newTitle,
         },
       });
 

@@ -15,7 +15,7 @@ export const newFolder = [
     let fileName;
 
     if (userId) {
-      fileName = await prisma.folder.findUnique({
+      fileName = await prisma.folder.findMany({
         where: {
           title: body.title,
           userId: userId,
@@ -27,7 +27,7 @@ export const newFolder = [
 
     if (!errors.isEmpty()) {
       res.status(500).json({ errors: errors.array() });
-    } else if (fileName) {
+    } else if (fileName.length !== 0) {
       res.status(500).json({ errors: "Folder name already exists" });
     } else {
       await prisma.folder.create({
@@ -42,14 +42,14 @@ export const newFolder = [
 ];
 
 export const getFolder = asyncHandler(async (req, res, next): Promise<any> => {
-  const title: string | undefined = req.params.title;
+  const folderId: number | undefined = Number(req.params.folderId);
   const userId: number | undefined = (req.user as User).id;
   let folder;
 
   if (userId) {
     folder = await prisma.folder.findMany({
       where: {
-        title: title,
+        id: folderId,
         userId: userId,
       },
       include: {
@@ -81,14 +81,14 @@ export const getFolder = asyncHandler(async (req, res, next): Promise<any> => {
 
 export const deleteFolder = asyncHandler(
   async (req, res, next): Promise<any> => {
-    const fileTitle: string = req.params.title;
+    const folderId: number = Number(req.params.folderId);
     const userId: number | undefined = (req.user as User).id;
     let folder;
 
     if (userId) {
       folder = await prisma.folder.findUnique({
         where: {
-          title: fileTitle,
+          id: folderId,
         },
         include: {
           _count: {
@@ -113,7 +113,7 @@ export const deleteFolder = asyncHandler(
     } else {
       await prisma.folder.delete({
         where: {
-          title: fileTitle,
+          id: folderId,
         },
       });
       return res.status(200).json({ message: "Folder deleted" });
@@ -136,7 +136,7 @@ export const updateFolder = [
     }
 
     if (userId) {
-      file = await prisma.folder.findUnique({
+      file = await prisma.folder.findMany({
         where: {
           title: body.newTitle,
           userId: userId,
@@ -149,7 +149,7 @@ export const updateFolder = [
       return res.status(404).json({ errors: "Something went wrong" });
     }
 
-    if (file) {
+    if (file.length !== 0) {
       return res.status(500).json({ message: "Folder name already exists" });
     } else if (title === "main") {
       return res
@@ -159,7 +159,6 @@ export const updateFolder = [
       await prisma.folder.update({
         where: {
           id: Number(body.id),
-          title: title,
           userId: userId,
         },
         data: {

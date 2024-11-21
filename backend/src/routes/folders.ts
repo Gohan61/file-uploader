@@ -13,8 +13,8 @@ folderRouter.post("/new", newFolder);
 
 folderRouter.get("/", getAllFolders);
 
-folderRouter.get("/:title", getFolder);
+folderRouter.get("/:folderId", getFolder);
 
-folderRouter.delete("/:title", deleteFolder);
+folderRouter.delete("/:folderId", deleteFolder);
 
 folderRouter.put("/:title", updateFolder);
